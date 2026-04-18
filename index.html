@@ -1,739 +1,723 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aashish Kumar Ray | Full Stack Developer & Digital Marketer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AASHISH KUMAR RAY | Digital Architect</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        :root {
-            --neon-blue: #0ff0fc;
-            --neon-purple: #bc13fe;
-            --neon-green: #39ff14;
-            --neon-pink: #ff00ff;
-            --neon-yellow: #ffd700;
-            --dark-bg: #0a0a12;
-            --darker-bg: #050508;
-            --card-bg: rgba(15, 15, 25, 0.8);
-            --grid-color: rgba(11, 255, 243, 0.3);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+<style>
+:root {
+  --cyan: #0077ff;
+  --purple: #7a2cff;
+  --green: #12b76a;
+  --pink: #ff2d55;
+  --gold: #caa300;
 
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            line-height: 1.6;
-            color: #e0e0e0;
-            background-color: var(--dark-bg);
-            overflow-x: hidden;
-            background-image:
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: gridMove 20s linear infinite;
-        }
+  --bg: #f6f8ff;
+  --bg2: #ffffff;
 
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 40px 40px; }
-        }
+  --card: rgba(0, 119, 255, 0.06);
+  --border: rgba(0, 119, 255, 0.22);
+}
 
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
 
-        header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 5%;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bg);
+  color:#0b1b2b;
+  overflow-x:hidden;
+  cursor:auto;
+}
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 20% 50%, rgba(11, 255, 243, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(188, 19, 254, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(57, 255, 20, 0.15) 0%, transparent 50%);
-            z-index: -1;
-            animation: float 6s ease-in-out infinite;
-        }
+/* ── CUSTOM CURSOR (DISABLED) ── */
+#cursor,
+#cursor-ring{
+  display:none !important;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1deg); }
-        }
+/* ── NOISE OVERLAY ── */
+#noise{
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.28;
+}
 
-        .header-content {
-            max-width: 900px;
-            z-index: 1;
-        }
+/* ── SCANLINES (SUBTLE ON LIGHT) ── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.03) 2px,
+    rgba(0,0,0,.03) 4px
+  );
+  pointer-events:none;z-index:9998;
+}
 
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            color: var(--neon-blue);
-            letter-spacing: 3px;
-            line-height: 1.2;
-            text-shadow: 0 0 10px rgba(11, 255, 243, 0.5);
-        }
+/* ── CANVAS BG ── */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--neon-green);
-            font-family: 'Orbitron', sans-serif;
-        }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 4%;
+  background:linear-gradient(180deg,rgba(246,248,255,.92),transparent);
+  backdrop-filter:blur(6px);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:4px;
+  color:var(--cyan);
+  text-shadow:0 0 20px rgba(0,119,255,.25);
+  text-decoration:none;
+}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.8rem;letter-spacing:2px;
+  color:rgba(11,27,43,.55);
+  text-decoration:none;
+  transition:.3s;
+  text-transform:uppercase;
+}
+.nav-links a:hover{color:var(--cyan);text-shadow:0 0 10px rgba(0,119,255,.25);}
 
-        #typing {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            min-height: 2.5rem;
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-        }
+/* ── HERO (NO BIG GAP) ── */
+#hero{
+  position:relative;
+  min-height:unset;
+  height:auto;
+  display:flex;flex-direction:column;
+  justify-content:flex-start;
+  align-items:flex-start;
+  padding:7.5rem 8% 2.5rem; /* space for fixed nav + small bottom padding */
+  z-index:1;
+  overflow:hidden;
+}
 
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            background-color: var(--neon-green);
-            margin-left: 0.1rem;
-            animation: blink 1s infinite;
-        }
+.hero-eyebrow{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.85rem;letter-spacing:6px;
+  color:var(--green);
+  text-shadow:0 0 12px rgba(18,183,106,.25);
+  margin-bottom:1.5rem;
+  animation:fadeSlideUp .8s ease both;
+}
+.hero-eyebrow::before{content:'[ ';color:var(--purple);}
+.hero-eyebrow::after{content:' ]';color:var(--purple);}
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+.hero-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,10vw,9rem);
+  line-height:.9;
+  letter-spacing:4px;
+  animation:fadeSlideUp .8s .15s ease both;
+  position:relative;
+}
+.hero-name span.line1{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--cyan);
+  filter:drop-shadow(0 0 18px rgba(0,119,255,.22));
+}
+.hero-name span.line2{
+  display:block;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 18px rgba(122,44,255,.25));
+}
 
-        .scroll-down {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--neon-blue);
-            font-size: 1.5rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }
+/* Glitch decoration */
+.hero-glitch-text{
+  position:absolute;right:5%;top:50%;
+  transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(8rem,18vw,22rem);
+  color:transparent;
+  -webkit-text-stroke:.5px rgba(0,119,255,.10);
+  letter-spacing:10px;
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+}
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-10px) translateX(-50%); }
-            60% { transform: translateY(-5px) translateX(-50%); }
-        }
+/* ── SECTIONS ── */
+section{
+  position:relative;z-index:1;
+  padding:6rem 8%;
+}
+.section-tag{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.75rem;letter-spacing:5px;
+  color:var(--purple);
+  text-shadow:0 0 10px rgba(122,44,255,.18);
+  margin-bottom:.8rem;
+  display:block;
+}
+.section-tag::before{content:'// ';}
+h2.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,6vw,5rem);
+  letter-spacing:4px;
+  line-height:1;
+  margin-bottom:.5rem;
+  color:#0b1b2b;
+}
+h2.sec-title .accent{
+  color:transparent;
+  -webkit-text-stroke:1px var(--cyan);
+}
+.sec-line{
+  width:80px;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  margin-bottom:3rem;
+}
 
-        section {
-            padding: 3rem 5%;
-            color: #fff;
-            position: relative;
-        }
+/* ── IDENTITY GRID ── */
+.id-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-top:1rem;
+}
+.id-cell{
+  background:var(--bg2);
+  padding:1.5rem 1.8rem;
+  display:flex;align-items:center;gap:1.2rem;
+  transition:.35s;
+  position:relative;overflow:hidden;
+}
+.id-cell::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,119,255,.06),transparent);
+  opacity:0;transition:.35s;
+}
+.id-cell:hover::before{opacity:1;}
+.id-cell:hover{background:rgba(0,119,255,.03);}
+.id-cell:hover .id-icon{color:var(--green);text-shadow:0 0 15px rgba(18,183,106,.25);}
+.id-icon{
+  font-size:1.4rem;
+  color:var(--cyan);
+  text-shadow:0 0 10px rgba(0,119,255,.20);
+  width:2rem;text-align:center;
+  flex-shrink:0;transition:.35s;
+}
+.id-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;letter-spacing:2px;
+  color:rgba(11,27,43,.45);
+  text-transform:uppercase;margin-bottom:.2rem;
+}
+.id-value{
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.05rem;font-weight:600;
+  color:#0b1b2b;
+}
 
-        section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-        }
+/* ── STATS ── */
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:2rem;margin:3rem 0;
+}
+.stat-box{
+  text-align:center;
+  padding:2rem 1rem;
+  border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:.4s;
+  background:rgba(255,255,255,.6);
+}
+.stat-box::before{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  transform:scaleX(0);transition:.4s;
+}
+.stat-box:hover::before{transform:scaleX(1);}
+.stat-box:hover{border-color:var(--cyan);box-shadow:0 0 30px rgba(0,119,255,.10);}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.5rem;
+  background:linear-gradient(180deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;letter-spacing:2px;
+  color:rgba(11,27,43,.45);
+  margin-top:.3rem;
+}
 
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            position: relative;
-            color: var(--neon-blue);
-        }
+/* ── SKILLS ── */
+.skills-wrap{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.5rem;margin-top:1rem;
+}
+.skill-card{
+  padding:1.8rem;
+  border:1px solid var(--border);
+  background:var(--card);
+  position:relative;overflow:hidden;
+  transition:.4s;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+}
+.skill-card::after{
+  content:'';
+  position:absolute;top:0;right:0;
+  width:0;height:0;
+  border-top:16px solid var(--cyan);
+  border-left:16px solid transparent;
+  opacity:.35;
+}
+.skill-card:hover{border-color:var(--cyan);background:rgba(0,119,255,.07);box-shadow:0 0 40px rgba(0,119,255,.10);}
+.skill-card:hover .skill-icon{transform:scale(1.1) rotate(-5deg);}
+.skill-icon{font-size:2rem;margin-bottom:.8rem;display:block;transition:.4s;color:var(--cyan);}
+.skill-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:.9rem;letter-spacing:1px;
+  color:#0b1b2b;margin-bottom:.5rem;
+}
+.skill-desc{
+  font-size:.85rem;
+  color:rgba(11,27,43,.60);
+  line-height:1.5;
+}
 
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            border-radius: 2px;
-        }
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;}}
 
-        /* ===== Premium Text-Only Identity (no blocks) ===== */
-        .identity-wrap {
-            max-width: 950px;
-            margin: 0 auto;
-            text-align: center;
-        }
+.contact-info h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:3px;
+  color:var(--cyan);margin-bottom:1.5rem;
+}
+.contact-item{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:1.2rem;
+  padding:.8rem;
+  border-left:2px solid var(--border);
+  transition:.3s;
+  background:rgba(255,255,255,.55);
+}
+.contact-item:hover{border-color:var(--cyan);padding-left:1.2rem;background:rgba(0,119,255,.05);}
+.contact-item i{color:var(--cyan);width:1.2rem;text-align:center;}
+.contact-item a,.contact-item span{
+  color:rgba(11,27,43,.75);
+  text-decoration:none;font-size:.95rem;transition:.3s;
+}
+.contact-item:hover a,.contact-item:hover span{color:var(--cyan);}
 
-        .identity-line {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            margin: 1rem 0;
-            letter-spacing: 1px;
-            color: #fff;
-            text-shadow: 0 0 12px rgba(11,255,243,0.4);
-            transition: var(--transition);
-        }
+/* FORM */
+.contact-form{display:flex;flex-direction:column;gap:1.2rem;}
+.form-group{position:relative;}
+.form-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.72rem;letter-spacing:2px;
+  color:var(--purple);margin-bottom:.5rem;display:block;
+}
+.form-input{
+  width:100%;
+  padding:.85rem 1rem;
+  background:rgba(255,255,255,.8);
+  border:1px solid var(--border);
+  color:#0b1b2b;
+  font-family:'Rajdhani',sans-serif;font-size:1rem;
+  transition:.3s;outline:none;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+.form-input:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,119,255,.12);background:rgba(0,119,255,.04);}
+textarea.form-input{min-height:110px;resize:vertical;}
+.submit-btn{
+  font-family:'Orbitron',sans-serif;
+  font-size:.85rem;letter-spacing:3px;
+  padding:1rem;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  border:none;color:#fff;font-weight:700;
+  transition:.4s;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+.submit-btn:hover{filter:brightness(1.05) saturate(1.15);transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,119,255,.22);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.msg-status{
+  font-family:'Share Tech Mono',monospace;font-size:.8rem;
+  padding:.7rem;text-align:center;display:none;letter-spacing:1px;
+}
+.msg-success{color:var(--green);border:1px solid var(--green);background:rgba(18,183,106,.08);}
+.msg-error{color:var(--pink);border:1px solid var(--pink);background:rgba(255,45,85,.08);}
 
-        .identity-line:hover {
-            color: var(--neon-green);
-            text-shadow: 0 0 18px rgba(57,255,20,0.7);
-            transform: scale(1.03);
-        }
+/* ── TELEGRAM BUTTON ── */
+.tg-btn{
+  display:inline-flex;align-items:center;gap:.8rem;
+  margin-top:2rem;
+  padding:1rem 2rem;
+  border:1px solid #229ed9;
+  color:#229ed9;
+  font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;
+  text-decoration:none;transition:.4s;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  background:rgba(255,255,255,.7);
+}
+.tg-btn:hover{background:#229ed9;color:#fff;box-shadow:0 0 40px rgba(34,158,217,.22);}
 
-        .identity-label {
-            color: var(--neon-blue);
-            font-weight: 900;
-        }
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  padding:2.5rem 8%;
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  background:rgba(255,255,255,.75);
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:8px;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(0,119,255,.25);
+}
+footer p{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;letter-spacing:2px;
+  color:rgba(11,27,43,.35);text-align:center;
+}
 
-        .identity-value {
-            color: #fff;
-            font-weight: 700;
-        }
+/* ── DIVIDER ── */
+.divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
+  opacity:.25;margin:0;
+}
 
-        .identity-icon {
-            color: var(--neon-purple);
-            margin-right: 8px;
-            text-shadow: 0 0 15px rgba(188,19,254,0.6);
-        }
+/* ── BACK TO TOP ── */
+#btt{
+  position:fixed;bottom:2rem;right:2rem;
+  width:44px;height:44px;
+  border:1px solid var(--cyan);
+  background:rgba(255,255,255,.85);
+  color:var(--cyan);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:.4s;z-index:500;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+#btt.show{opacity:1;visibility:visible;}
+#btt:hover{background:var(--cyan);color:#fff;box-shadow:0 0 20px rgba(0,119,255,.22);}
 
-        .telegram-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.7rem;
-            margin-top: 2rem;
-            padding: 0.9rem 2rem;
-            border-radius: 40px;
-            border: 2px solid var(--neon-blue);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--neon-blue);
-            text-decoration: none;
-            transition: var(--transition);
-            box-shadow: 0 0 18px rgba(11,255,243,0.5);
-        }
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes glitchX{0%,100%{clip-path:inset(0 0 95% 0);}20%{clip-path:inset(33% 0 40% 0);}40%{clip-path:inset(70% 0 5% 0);}60%{clip-path:inset(15% 0 60% 0);}80%{clip-path:inset(50% 0 25% 0);}}
 
-        .telegram-link:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 35px rgba(11,255,243,0.9);
-            transform: translateY(-4px);
-        }
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-        /* Contact Section */
-        .contact-container {
-            display: flex;
-            justify-content: center;
-        }
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{padding:1rem 5%;}
+  .nav-links{display:none;}
+  section{padding:4rem 5%;}
+  #hero{padding:6.6rem 5% 2rem;}
+  .hero-glitch-text{display:none;}
+  .id-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
 
-        .contact-form {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.2rem;
-            border: 1px solid var(--neon-blue);
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-            width: 100%;
-            max-width: 500px;
-        }
+/* tighter for phones */
+@media (max-width: 480px){
+  #hero{padding:6.2rem 5% 1.5rem;}
+  section{padding:3.5rem 5%;}
+  .stats-row{grid-template-columns:1fr 1fr;gap:1rem;}
+}
 
-        .contact-form:hover {
-            transform: translateY(-5px);
-        }
+/* Better large screens spacing */
+@media (min-width: 1200px){
+  section{padding:6.5rem 10%;}
+  #hero{padding:7.5rem 10% 2.5rem;}
+}
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+/* corner decorations */
+.corner-tl,.corner-br{
+  position:absolute;
+  width:20px;height:20px;
+  pointer-events:none;
+}
+.corner-tl{top:0;left:0;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
+.corner-br{bottom:0;right:0;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);}
+</style>
+</head>
 
-        .form-label {
-            display: block;
-            margin-bottom: 0.3rem;
-            color: var(--neon-blue);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.6rem;
-            background: rgba(10, 10, 18, 0.7);
-            border: 1px solid var(--neon-blue);
-            border-radius: 4px;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .form-input:focus {
-            outline: none;
-            box-shadow: 0 0 10px var(--neon-blue);
-            border-color: var(--neon-green);
-        }
-
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 0.7rem;
-            background: var(--neon-blue);
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid var(--neon-blue);
-        }
-
-        .submit-btn:hover {
-            background: transparent;
-            color: var(--neon-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 255, 243, 0.4);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .message-status {
-            margin-top: 1rem;
-            padding: 0.6rem;
-            border-radius: 4px;
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .message-success {
-            background: rgba(57, 255, 20, 0.2);
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-        }
-
-        .message-error {
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid #ff0000;
-            color: #ff0000;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--neon-blue);
-            color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 999;
-            border: none;
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--neon-blue);
-            background: rgba(10, 10, 18, 0.9);
-            font-family: 'Orbitron', sans-serif;
-            backdrop-filter: blur(5px);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-link {
-            color: #fff;
-            font-size: 1.5rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 1px solid transparent;
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px);
-        }
-
-        .telegram:hover {
-            color: #0088cc;
-            border: 1px solid #0088cc;
-            box-shadow: 0 0 15px #0088cc;
-        }
-
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -2;
-            opacity: 0.2;
-        }
-
-        .floating-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .floating-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            animation: float-particle 15s infinite linear;
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header { height: 80vh; }
-            header h1 { font-size: 3rem; }
-            .subtitle { font-size: 1.2rem; }
-            #typing { font-size: 1.2rem; }
-            .identity-line { font-size: 1rem; }
-        }
-
-        @media (max-width: 480px) {
-            header { height: 70vh; }
-            header h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-            section { padding: 2rem 5%; }
-            .identity-line { font-size: 0.95rem; }
-        }
-    </style>
-<script defer data-domain="b44ner.tech" src="https://analytics.tiiny.site/js/plausible.js"></script></head>
 <body>
+<div id="noise"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bgCanvas"></canvas>
 
-<div id="particles-js"></div>
-<div class="matrix-bg" id="matrixBg"></div>
-<div class="floating-particles" id="floatingParticles"></div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"></a>
+  <ul class="nav-links">
+    <li><a href="#identity">Identity</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-<header>
-    <div class="header-content">
-        <h1>AASHISH KUMAR RAY</h1>
-        <div class="subtitle">Full Stack Developer & Digital Marketer</div>
-        <div id="typing"><span class="cursor"></span></div>
+<!-- HERO (NAME ONLY) -->
+<section id="hero">
+  <div class="hero-eyebrow"></div>
+  <div class="hero-name glitch" data-text="AASHISH">
+    <span class="line1">AASHISH</span>
+    <span class="line2">KUMAR RAY</span>
+  </div>
+  <div class="hero-glitch-text">B44NER</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- IDENTITY -->
+<section id="identity">
+  <span class="section-tag reveal">PERSONAL DATA</span>
+  <h2 class="sec-title reveal">IDENTITY <span class="accent">MATRIX</span></h2>
+  <div class="sec-line reveal"></div>
+
+  <div class="id-grid reveal">
+    <div class="id-cell">
+      <div class="corner-tl"></div>
+      <i class="fas fa-fingerprint id-icon"></i>
+      <div><div class="id-label">Designation</div><div class="id-value">Aashish Kumar Ray</div></div>
     </div>
-    <div class="scroll-down" id="scrollDown">
-        <i class="fas fa-chevron-down"></i>
+    <div class="id-cell">
+      <i class="fas fa-calendar-alt id-icon"></i>
+      <div><div class="id-label">Date of Birth</div><div class="id-value">12 July 2007</div></div>
     </div>
-</header>
+    <div class="id-cell">
+      <i class="fas fa-hourglass-half id-icon"></i>
+      <div><div class="id-label">Age</div><div class="id-value">18 Years Old</div></div>
+    </div>
+    <div class="id-cell">
+      <i class="fas fa-om id-icon"></i>
+      <div><div class="id-label">Religion</div><div class="id-value">Hindu</div></div>
+    </div>
+    <div class="id-cell">
+      <i class="fas fa-map-marked-alt id-icon"></i>
+      <div><div class="id-label">Location</div><div class="id-value">Bihar, India </div></div>
+    </div>
+    <div class="id-cell">
+      <i class="fas fa-envelope id-icon"></i>
+      <div><div class="id-label">Email</div><div class="id-value">Tech.aashish1277@gmail.com</div></div>
+    </div>
+    <div class="id-cell">
+      <i class="fas fa-graduation-cap id-icon"></i>
+      <div><div class="id-label">Schooling</div><div class="id-value">12th Arts Stream · 2024</div></div>
+    </div>
+    <div class="id-cell">
+      <div class="corner-br"></div>
+      <i class="fas fa-university id-icon"></i>
+      <div><div class="id-label">College</div><div class="id-value">DU SOL · Delhi University</div></div>
+    </div>
+  </div>
 
+  <div class="stats-row reveal">
+    <div class="stat-box">
+      <div class="stat-num">18</div>
+      <div class="stat-label">YEARS OLD</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">2024</div>
+      <div class="stat-label">BATCH YEAR</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">AMBITION</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">01</div>
+      <div class="stat-label">GOAL — AGNIVEER</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:2rem;" class="reveal">
+    <a href="https://t.me/TechTrovebyb44ner" target="_blank" class="tg-btn">
+      <i class="fab fa-telegram-plane"></i> TECH TROVE CHANNEL
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
 <section id="skills">
-    <h2>Identity</h2>
-    <div class="identity-wrap">
-        <div class="identity-line"><i class="fas fa-fingerprint identity-icon"></i><span class="identity-label">Name:</span> <span class="identity-value">Aashish Kumar Ray</span></div>
-        <div class="identity-line"><i class="fas fa-calendar-alt identity-icon"></i><span class="identity-label">DOB:</span> <span class="identity-value">12 July 2007</span></div>
-        <div class="identity-line"><i class="fas fa-hourglass-half identity-icon"></i><span class="identity-label">Age:</span> <span class="identity-value">18 years old</span></div>
-        <div class="identity-line"><i class="fas fa-om identity-icon"></i><span class="identity-label">Religion:</span> <span class="identity-value">Hindu</span></div>
-        <div class="identity-line"><i class="fas fa-map-marked-alt identity-icon"></i><span class="identity-label">Location:</span> <span class="identity-value">Bihar, India</span></div>
-        <div class="identity-line"><i class="fas fa-envelope identity-icon"></i><span class="identity-label">Email:</span> <span class="identity-value">Tech.aashish1277@gmail.com</span></div>
-        <div class="identity-line"><i class="fas fa-university identity-icon"></i><span class="identity-label">Schooling:</span> <span class="identity-value">12th Standard (Arts Stream, Class of 2024)</span></div>
-        <div class="identity-line"><i class="fas fa-graduation-cap identity-icon"></i><span class="identity-label">Higher Education:</span> <span class="identity-value">DU SOL (Delhi University School of Open Learning)</span></div>
+  <span class="section-tag reveal">CAPABILITIES</span>
+  <h2 class="sec-title reveal">SKILL <span class="accent">SET</span></h2>
+  <div class="sec-line reveal"></div>
 
-        <a href="https://t.me/TechTrovebyb44ner" target="_blank" class="telegram-link">
-            <i class="fab fa-telegram-plane"></i> Join Tech Trove Channel
-        </a>
+  <div class="skills-wrap">
+    <div class="skill-card reveal">
+      <span class="skill-icon">⌨</span>
+      <div class="skill-name">PYTHON DEV</div>
+      <div class="skill-desc">Terminal tools, automation scripts, Instagram bots, APK packaging pipelines.</div>
     </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🌐</span>
+      <div class="skill-name">WEB DEVELOPMENT</div>
+      <div class="skill-desc">Full single-file HTML/CSS/JS apps with god-tier UI, cyberpunk aesthetics & animations.</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">📈</span>
+      <div class="skill-name">DIGITAL MARKETING</div>
+      <div class="skill-desc">AI-powered content strategy, social media automation, real estate & client outreach.</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🧠</span>
+      <div class="skill-name">AI & TOOLS</div>
+      <div class="skill-desc">Claude, Leonardo AI, Canva, Make.com, Buffer — full AI workflow integration.</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🎮</span>
+      <div class="skill-name">GAMIFICATION</div>
+      <div class="skill-desc">RPG-style life tracking apps with XP, ranks, quests, and real-time AI quest generation.</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">⚔</span>
+      <div class="skill-name">AGNIVEER PREP</div>
+      <div class="skill-desc">Written exam & physical training. Discipline, GK, Reasoning, Maths. Never stopping.</div>
+    </div>
+  </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- CONTACT -->
 <section id="contact">
-    <h2>Contact Me</h2>
-    <div class="contact-container">
-        <form class="contact-form" id="contactForm">
-            <div class="form-group">
-                <label for="name" class="form-label">Your Name</label>
-                <input type="text" id="name" name="name" class="form-input" required>
-            </div>
-            <div class="form-group">
-                <label for="email" class="form-label">Your Email</label>
-                <input type="email" id="email" name="email" class="form-input" required>
-            </div>
-            <div class="form-group">
-                <label for="message" class="form-label">Your Message</label>
-                <textarea id="message" name="message" class="form-input form-textarea" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
-            <div id="messageStatus" class="message-status"></div>
-        </form>
+  <span class="section-tag reveal">COMMUNICATION LINK</span>
+  <h2 class="sec-title reveal">CONTACT <span class="accent">PROTOCOL</span></h2>
+  <div class="sec-line reveal"></div>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>ESTABLISH<br>CONNECTION</h3>
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:Tech.aashish1277@gmail.com">Tech.aashish1277@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <i class="fab fa-telegram"></i>
+        <a href="https://t.me/TechTrovebyb44ner" target="_blank">t.me/TechTrovebyb44ner</a>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Delhi, India</span>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-globe"></i>
+        <a href="https://b44ner.tech" target="_blank">b44ner.tech</a>
+      </div>
+      <p style="margin-top:2rem;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:rgba(11,27,43,.35);line-height:1.8;letter-spacing:1px;">
+        // Available for freelance projects,<br>
+        // collaborations & digital solutions.<br>
+        // Response time: &lt; 24hrs
+      </p>
     </div>
+
+    <form class="contact-form reveal" id="contactForm">
+      <div class="form-group">
+        <label class="form-label" for="name">// NAME</label>
+        <input type="text" id="name" class="form-input" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">// EMAIL</label>
+        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="message">// MESSAGE</label>
+        <textarea id="message" class="form-input" placeholder="Transmit your message..." required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">TRANSMIT MESSAGE</button>
+      <div id="msgStatus" class="msg-status"></div>
+    </form>
+  </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-    <div class="social-links">
-        <a href="https://t.me/TechTrovebyb44ner" target="_blank" class="social-link telegram">
-            <i class="fab fa-telegram"></i>
-        </a>
-    </div>
-    © 2026 Aashish Kumar Ray | Full Stack Developer & Digital Marketer • Email: Tech.aashish1277@gmail.com
+  <div class="footer-logo">B44NER.TECH</div>
+  <p>© 2026 AASHISH KUMAR RAY · FULL STACK DEVELOPER & DIGITAL MARKETER</p>
+  <p>BUILT WITH PRECISION · POWERED BY AMBITION</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<button id="btt" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+
 <script>
-    particlesJS("particles-js", {
-        particles: {
-            number: { value: 120, density: { enable: true, value_area: 800 } },
-            color: { value: ["#0ff0fc", "#bc13fe", "#39ff14", "#ff00ff"] },
-            shape: { type: "circle" },
-            opacity: { value: 0.7, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
-            size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
-            line_linked: { enable: true, distance: 150, color: "#0ff0fc", opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
-        },
-        interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
-        retina_detect: true
-    });
+// ── CANVAS BG (grid + aurora) ──
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+let t=0;
+function drawBg(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(0,119,255,0.08)';ctx.lineWidth=1;
+  const gSize=60;
+  for(let x=0;x<canvas.width;x+=gSize){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=0;y<canvas.height;y+=gSize){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+  [[.2,.5,'rgba(0,119,255,.10)'],[.8,.25,'rgba(122,44,255,.10)'],[.5,.8,'rgba(18,183,106,.07)']].forEach(([xr,yr,col],i)=>{
+    const grd=ctx.createRadialGradient(canvas.width*xr+Math.sin(t*.5+i)*40,canvas.height*yr+Math.cos(t*.4+i)*30,0,canvas.width*xr,canvas.height*yr,canvas.width*.35);
+    grd.addColorStop(0,col);grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;ctx.fillRect(0,0,canvas.width,canvas.height);
+  });
+  t+=.01;requestAnimationFrame(drawBg);
+}
+drawBg();
 
-    function createMatrix() {
-        const matrixBg = document.getElementById('matrixBg');
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        matrixBg.appendChild(canvas);
+// ── BACK TO TOP ──
+const btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>btt.classList.toggle('show',scrollY>400));
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-        const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const charArray = chars.split("");
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let x = 0; x < columns; x++) drops[x] = Math.floor(Math.random() * canvas.height / fontSize);
-
-        function draw() {
-            ctx.fillStyle = "rgba(10, 10, 18, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.font = `bold ${fontSize}px monospace`;
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
-                const y = drops[i] * fontSize;
-
-                const gradient = ctx.createLinearGradient(0, y, 0, y + fontSize);
-                gradient.addColorStop(0, "#0ff0fc");
-                gradient.addColorStop(1, "#39ff14");
-                ctx.fillStyle = gradient;
-
-                ctx.fillText(text, i * fontSize, y);
-
-                if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 35);
-    }
-
-    function createFloatingParticles() {
-        const container = document.getElementById('floatingParticles');
-        const particleCount = 40;
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'floating-particle';
-
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = Math.random() * 100 + 'vh';
-
-            const size = Math.random() * 4 + 2;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-
-            const colors = ['#0ff0fc', '#bc13fe', '#39ff14', '#ff00ff'];
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-
-            container.appendChild(particle);
-        }
-    }
-
-    const typingElement = document.getElementById('typing');
-    const texts = ["Full Stack Developer", "Digital Marketer", "DU SOL Student"];
-    let textIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingDelay = 100;
-    let erasingDelay = 50;
-    let newTextDelay = 2000;
-
-    function type() {
-        const currentText = texts[textIndex];
-
-        if (isDeleting) {
-            typingElement.innerHTML = currentText.substring(0, charIndex - 1) + '<span class="cursor"></span>';
-            charIndex--;
-            typingDelay = erasingDelay;
-        } else {
-            typingElement.innerHTML = currentText.substring(0, charIndex + 1) + '<span class="cursor"></span>';
-            charIndex++;
-            typingDelay = 100;
-        }
-
-        if (!isDeleting && charIndex === currentText.length) {
-            isDeleting = true;
-            typingDelay = newTextDelay;
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            textIndex = (textIndex + 1) % texts.length;
-            typingDelay = 500;
-        }
-
-        setTimeout(type, typingDelay);
-    }
-
-    // FIXED TELEGRAM INTEGRATION
-    async function sendToTelegram(name, email, message) {
-        const botToken = "8205674117:AAHfa4ujOyPwpvAxGHhmcQh6jGkuY127Hwc";
-        const chatId = "5714613336";
-        
-        try {
-            const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: `🚀 <b>New Contact Form Submission</b>\n\n<b>Name:</b> ${name}\n<b>Email:</b> ${email}\n<b>Message:</b> ${message}`,
-                    parse_mode: 'HTML'
-                })
-            });
-
-            return response.ok;
-        } catch (error) {
-            console.error('Error sending message:', error);
-            return false;
-        }
-    }
-
-    document.getElementById('contactForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        const submitBtn = document.getElementById('submitBtn');
-
-        if (!name || !email || !message) return showMessage('Please fill in all fields.', 'error');
-        if (!validateEmail(email)) return showMessage('Please enter a valid email address.', 'error');
-
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-
-        try {
-            const success = await sendToTelegram(name, email, message);
-            if (success) showMessage("Message sent successfully!", 'success');
-            else showMessage("Message failed, try again.", 'error');
-            document.getElementById('contactForm').reset();
-        } finally {
-            submitBtn.textContent = 'Send Message';
-            submitBtn.disabled = false;
-        }
-    });
-
-    function showMessage(text, type) {
-        const messageStatus = document.getElementById('messageStatus');
-        messageStatus.textContent = text;
-        messageStatus.className = `message-status message-${type}`;
-        messageStatus.style.display = 'block';
-        setTimeout(() => { messageStatus.style.display = 'none'; }, 5000);
-    }
-
-    function validateEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(type, newTextDelay + 250);
-        createMatrix();
-        createFloatingParticles();
-    });
-
-    document.getElementById('scrollDown').addEventListener('click', () => {
-        window.scrollTo({ top: document.getElementById('skills').offsetTop, behavior: 'smooth' });
-    });
+// ── CONTACT FORM ──
+async function sendTelegram(name,email,msg){
+  const token='8205674117:AAHfa4ujOyPwpvAxGHhmcQh6jGkuY127Hwc';
+  const chat='5714613336';
+  const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:chat,text:`🚀 <b>New Message — b44ner.tech</b>\n\n<b>From:</b> ${name}\n<b>Email:</b> ${email}\n<b>Message:</b> ${msg}`,parse_mode:'HTML'})
+  });
+  return r.ok;
+}
+document.getElementById('contactForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const msg=document.getElementById('message').value.trim();
+  const btn=document.getElementById('submitBtn');
+  const status=document.getElementById('msgStatus');
+  if(!name||!email||!msg){status.textContent='// ERROR: ALL FIELDS REQUIRED';status.className='msg-status msg-error';status.style.display='block';return;}
+  btn.textContent='TRANSMITTING...';btn.disabled=true;
+  const ok=await sendTelegram(name,email,msg);
+  status.textContent=ok?'// TRANSMISSION SUCCESSFUL':'// TRANSMISSION FAILED — RETRY';
+  status.className='msg-status '+(ok?'msg-success':'msg-error');
+  status.style.display='block';
+  if(ok)document.getElementById('contactForm').reset();
+  btn.textContent='TRANSMIT MESSAGE';btn.disabled=false;
+  setTimeout(()=>status.style.display='none',5000);
+});
 </script>
-
 </body>
 </html>
