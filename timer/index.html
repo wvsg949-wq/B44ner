@@ -29,19 +29,17 @@
             background-color: var(--dark-bg);
             color: var(--neon-cyan);
             overflow: hidden;
-            /* Scanline effect */
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             background-size: 100% 4px, 3px 100%;
         }
 
-        /* Cyberpunk Grid Background */
         body::before {
             content: "";
             position: fixed;
             width: 200%;
             height: 200%;
-            background-image: 
+            background-image:
                 linear-gradient(var(--neon-cyan) 1px, transparent 1px),
                 linear-gradient(90deg, var(--neon-cyan) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -75,24 +73,14 @@
             scroll-behavior: smooth;
         }
 
-        /* Custom Scrollbar */
-        .scrollable-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .scrollable-content::-webkit-scrollbar-track {
-            background: rgba(0, 247, 255, 0.1);
-        }
-
+        .scrollable-content::-webkit-scrollbar { width: 8px; }
+        .scrollable-content::-webkit-scrollbar-track { background: rgba(0, 247, 255, 0.1); }
         .scrollable-content::-webkit-scrollbar-thumb {
             background: var(--neon-cyan);
             border-radius: 4px;
             box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
         }
-
-        .scrollable-content::-webkit-scrollbar-thumb:hover {
-            background: var(--neon-pink);
-        }
+        .scrollable-content::-webkit-scrollbar-thumb:hover { background: var(--neon-pink); }
 
         .container {
             width: 100%;
@@ -116,7 +104,6 @@
             justify-content: space-between;
         }
 
-        /* Timer Display */
         #timer {
             font-size: 3.5rem;
             text-align: center;
@@ -133,7 +120,6 @@
             22% { transform: skew(0deg); }
         }
 
-        /* Buttons */
         .controls {
             display: flex;
             gap: 20px;
@@ -161,12 +147,8 @@
         }
 
         button:active { transform: scale(0.95); }
+        button.hidden { display: none; }
 
-        button.hidden {
-            display: none;
-        }
-
-        /* Logs Section */
         .log-section {
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(0, 247, 255, 0.3);
@@ -178,14 +160,8 @@
             scrollbar-color: var(--neon-cyan) transparent;
         }
 
-        .log-section::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .log-section::-webkit-scrollbar-thumb {
-            background: var(--neon-cyan);
-            border-radius: 2px;
-        }
+        .log-section::-webkit-scrollbar { width: 6px; }
+        .log-section::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 2px; }
 
         .log-entry {
             margin-bottom: 5px;
@@ -196,7 +172,7 @@
 
         .log-entry span { color: var(--neon-pink); }
 
-        /* Stats Section */
+        /* Two-column stats grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -212,6 +188,7 @@
             clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%);
             position: relative;
             overflow: hidden;
+            transition: box-shadow 0.3s;
         }
 
         .stat-box::before {
@@ -230,6 +207,17 @@
             100% { left: 100%; }
         }
 
+        /* Record-beating glow on longest streak box */
+        .stat-box.new-record {
+            animation: recordPulse 1s ease-in-out infinite;
+            border-color: var(--neon-pink);
+        }
+
+        @keyframes recordPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 0, 85, 0.9); }
+        }
+
         .stat-label {
             font-size: 0.65rem;
             letter-spacing: 2px;
@@ -239,30 +227,26 @@
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             color: var(--neon-cyan);
             text-shadow: 0 0 10px var(--neon-cyan);
             letter-spacing: 1px;
         }
 
-        /* Modal Styles */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
             z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
         }
 
-        .modal.show {
-            display: flex;
-        }
+        .modal.show { display: flex; }
 
         .modal-content {
             background: var(--terminal-bg);
@@ -276,14 +260,8 @@
         }
 
         @keyframes modalSlide {
-            from {
-                transform: scale(0.7) translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
+            from { transform: scale(0.7) translateY(-50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -303,8 +281,7 @@
         }
 
         .step {
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             border: 1px solid var(--neon-cyan);
             display: flex;
             align-items: center;
@@ -313,17 +290,8 @@
             transition: 0.3s;
         }
 
-        .step.active {
-            background: var(--neon-cyan);
-            color: black;
-            box-shadow: 0 0 15px var(--neon-cyan);
-        }
-
-        .step.completed {
-            background: var(--neon-pink);
-            color: white;
-            border-color: var(--neon-pink);
-        }
+        .step.active { background: var(--neon-cyan); color: black; box-shadow: 0 0 15px var(--neon-cyan); }
+        .step.completed { background: var(--neon-pink); color: white; border-color: var(--neon-pink); }
 
         .modal-text {
             text-align: center;
@@ -333,10 +301,7 @@
             letter-spacing: 1px;
         }
 
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-        }
+        .modal-buttons { display: flex; gap: 15px; }
 
         .modal-button {
             flex: 1;
@@ -352,24 +317,12 @@
             clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%);
         }
 
-        .modal-button:hover {
-            background: var(--neon-cyan);
-            color: black;
-            box-shadow: 0 0 15px var(--neon-cyan);
-        }
+        .modal-button:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 15px var(--neon-cyan); }
 
-        .modal-button.proceed {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-        }
+        .modal-button.proceed { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .modal-button.proceed:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 15px var(--neon-pink); }
 
-        .modal-button.proceed:hover {
-            background: var(--neon-pink);
-            color: white;
-            box-shadow: 0 0 15px var(--neon-pink);
-        }
-
-        /* Longest Streak Mobile */
+        /* Mobile longest streak highlight card */
         .longest-streak-mobile {
             display: none;
         }
@@ -408,60 +361,21 @@
                 50% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.6), inset 0 0 15px rgba(255, 0, 85, 0.2); }
             }
 
-            #timer {
-                font-size: 2.5rem;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            button {
-                font-size: 1rem;
-                padding: 12px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
+            #timer { font-size: 2.5rem; }
+            .container { padding: 20px; }
+            button { font-size: 1rem; padding: 12px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
         }
 
         @media (max-width: 480px) {
-            #timer {
-                font-size: 2rem;
-                margin: 20px 0;
-            }
-
-            .container {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-
-            .header {
-                font-size: 0.7rem;
-            }
-
-            button {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
-
-            .controls {
-                gap: 10px;
-            }
-
-            .stat-value {
-                font-size: 1.5rem;
-            }
-
-            .streak-value {
-                font-size: 2rem;
-            }
-
-            .modal-content {
-                padding: 25px 20px;
-            }
+            #timer { font-size: 1.8rem; margin: 20px 0; }
+            .container { padding: 15px; margin-bottom: 15px; }
+            .header { font-size: 0.7rem; }
+            button { font-size: 0.9rem; padding: 10px; }
+            .controls { gap: 10px; }
+            .stat-value { font-size: 1.1rem; }
+            .streak-value { font-size: 2rem; }
+            .modal-content { padding: 25px 20px; }
         }
     </style>
 </head>
@@ -472,7 +386,7 @@
         <div class="container">
             <div class="header">
                 <span>STATUS: ONLINE</span>
-                <span>SYS_LOG_PERSIST_V.1.0</span>
+                <span>SYS_LOG_PERSIST_V.2.0</span>
             </div>
 
             <div id="timer">00:00:00:00</div>
@@ -485,26 +399,18 @@
             <!-- Longest Streak Mobile Only -->
             <div class="longest-streak-mobile">
                 <div class="streak-label">⚡ Longest Time Streak ⚡</div>
-                <div class="streak-value" id="longestStreakValue">0 DAYS</div>
+                <div class="streak-value" id="longestStreakMobile">0 DAYS</div>
             </div>
 
-            <!-- Stats Section -->
+            <!-- Stats Section: only Current Streak + Longest Streak -->
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-label">Current Streak</div>
-                    <div class="stat-value" id="currentStreak">0:00</div>
+                    <div class="stat-value" id="currentStreak">00:00:00:00</div>
                 </div>
-                <div class="stat-box">
+                <div class="stat-box" id="longestStreakBox">
                     <div class="stat-label">Longest Streak</div>
-                    <div class="stat-value" id="longestStreak">0:00</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Total Sessions</div>
-                    <div class="stat-value" id="totalSessions">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Average Time</div>
-                    <div class="stat-value" id="averageTime">0:00</div>
+                    <div class="stat-value" id="longestStreak">00:00:00:00</div>
                 </div>
             </div>
 
@@ -521,8 +427,8 @@
 <!-- Reset Confirmation Modal -->
 <div id="resetModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" id="modalTitle">CONFIRM: ERASE ALL DATA?</div>
-        
+        <div class="modal-header" id="modalTitle">RESET CURRENT TIMER?</div>
+
         <div class="step-indicator">
             <div class="step active" id="step1">1</div>
             <div class="step" id="step2">2</div>
@@ -530,7 +436,7 @@
         </div>
 
         <div class="modal-text" id="modalText">
-            This action will erase all timer data and logs. Click PROCEED to continue.
+            This will reset the current timer to zero. Your Longest Streak will be preserved.
         </div>
 
         <div class="modal-buttons">
@@ -545,55 +451,40 @@
     const REDIS_URL = "https://eminent-bulldog-76184.upstash.io";
     const REDIS_TOKEN = "gQAAAAAAASmYAAIgcDEwZWMyMzZhOTY3ZmE0ODY2OGU4ODcxMGZhZTUzOTgwYw";
 
+    // Runtime state
     let startTime = null;
     let isRunning = false;
     let intervalId = null;
+
+    // Streak state
+    let longestStreakMs = 0;
+    let hasStartedBefore = false;
+    let recordReachedInCurrentRun = false;
+
     let resetStep = 0;
 
+    const ONE_DAY_MS = 86400000;
+
     const resetMessages = [
-        { title: "CONFIRM: ERASE ALL DATA?", text: "This action will erase all timer data and logs. Click PROCEED to continue." },
-        { title: "WARNING: THIS CANNOT BE UNDONE", text: "All sessions, logs, and statistics will be permanently deleted. Are you sure?" },
-        { title: "FINAL CONFIRMATION REQUIRED", text: "Click PROCEED one more time to execute complete data purge." }
+        { title: "RESET CURRENT TIMER?", text: "This will reset the current timer to zero. Your Longest Streak will be preserved." },
+        { title: "WARNING: CURRENT RUN WILL BE LOST", text: "The active session will be cleared. Longest Streak stays intact. Are you sure?" },
+        { title: "FINAL CONFIRMATION", text: "Click PROCEED to confirm timer reset. Longest Streak will not be affected." }
     ];
 
+    // ---- Redis helpers ----
     async function api(cmd, ...args) {
-        const response = await fetch(`${REDIS_URL}/${cmd}/${args.join('/')}`, {
-            headers: { Authorization: `Bearer ${REDIS_TOKEN}` }
-        });
-        return response.json();
-    }
-
-    // Sync state from server on load
-    async function sync() {
-        const res = await api('GET', 'timer_state');
-        const logs = await api('LRANGE', 'timer_logs', '0', '-1');
-        const stats = await api('GET', 'timer_stats');
-
-        if (res.result) {
-            const state = JSON.parse(res.result);
-            startTime = state.startTime;
-            isRunning = state.isRunning;
-            if (isRunning) startLocalTimer();
-            updateUI();
-        }
-
-        const logContainer = document.getElementById('logs');
-        logContainer.innerHTML = '';
-        if (logs.result) {
-            logs.result.reverse().forEach(log => {
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                div.innerHTML = decodeURIComponent(log);
-                logContainer.appendChild(div);
+        try {
+            const response = await fetch(`${REDIS_URL}/${cmd}/${args.join('/')}`, {
+                headers: { Authorization: `Bearer ${REDIS_TOKEN}` }
             });
-        }
-
-        if (stats.result) {
-            const statsData = JSON.parse(stats.result);
-            updateStats(statsData);
+            return response.json();
+        } catch (e) {
+            console.error('Redis error:', e);
+            return { result: null };
         }
     }
 
+    // ---- Formatters ----
     function formatTime(ms) {
         let totalSecs = Math.floor(ms / 1000);
         let days = Math.floor(totalSecs / 86400);
@@ -603,69 +494,133 @@
         return `${String(days).padStart(2, '0')}:${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     }
 
-    function formatShortTime(ms) {
-        let totalSecs = Math.floor(ms / 1000);
-        let mins = Math.floor(totalSecs / 60);
-        let secs = totalSecs % 60;
-        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    function formatDays(ms) {
+        let days = Math.floor(ms / 86400000);
+        // Show at least 1 DAY if we have any ms (i.e. has started before)
+        if (hasStartedBefore && days < 1) days = 1;
+        return days === 1 ? `${days} DAY` : `${days} DAYS`;
     }
 
-    function formatDays(ms) {
-        let totalSecs = Math.floor(ms / 1000);
-        let days = Math.floor(totalSecs / 86400);
-        return days === 1 ? `${days} DAY` : `${days} DAYS`;
+    function currentElapsed() {
+        if (!isRunning || !startTime) return 0;
+        return Date.now() - startTime;
+    }
+
+    // Throttle streak persistence — once per minute max (vs every second = ~1380 fewer writes/day)
+    let lastStreakPersistTime = 0;
+    const STREAK_PERSIST_INTERVAL = 60000;
+
+    // ---- UI update on every tick ----
+    function tick() {
+        const elapsed = currentElapsed();
+        document.getElementById('timer').innerText = formatTime(elapsed);
+        document.getElementById('currentStreak').innerText = formatTime(elapsed);
+
+        // Update Longest Streak only when current run beats it
+        if (elapsed > longestStreakMs) {
+            longestStreakMs = elapsed;
+            updateLongestStreakUI(true);
+
+            // Throttle writes: persist at most once per minute
+            const now = Date.now();
+            if (now - lastStreakPersistTime > STREAK_PERSIST_INTERVAL) {
+                lastStreakPersistTime = now;
+                persistStreakStats();
+            }
+
+            // Log new record once per run
+            if (!recordReachedInCurrentRun) {
+                recordReachedInCurrentRun = true;
+                addLogEntry('NEW_LONGEST_STREAK_REACHED');
+            }
+        }
+    }
+
+    // ---- Keepalive: silent PING every 6 hours to prevent Upstash inactivity deletion ----
+    // Free tier deletes DBs idle for 7 days. 4 pings/day costs 4 requests and keeps it alive forever.
+    async function keepalive() {
+        try { await api('PING'); } catch(e) {}
+    }
+    setInterval(keepalive, 6 * 60 * 60 * 1000);
+
+    function updateLongestStreakUI(isNewRecord) {
+        document.getElementById('longestStreak').innerText = formatTime(longestStreakMs);
+        document.getElementById('longestStreakMobile').innerText = formatDays(longestStreakMs);
+
+        const box = document.getElementById('longestStreakBox');
+        if (isNewRecord) {
+            box.classList.add('new-record');
+        } else {
+            box.classList.remove('new-record');
+        }
+    }
+
+    // ---- Persist to Redis ----
+    async function persistTimerState() {
+        const state = { startTime, isRunning };
+        await api('SET', 'timer_state_v2', encodeURIComponent(JSON.stringify(state)));
+    }
+
+    async function persistStreakStats() {
+        const stats = {
+            longestStreakMs,
+            hasStartedBefore
+        };
+        await api('SET', 'timer_stats_v2', encodeURIComponent(JSON.stringify(stats)));
+    }
+
+    async function addLogEntry(msg) {
+        const timestamp = new Date().toLocaleString();
+        const logMsg = `<span>[${timestamp}]</span> ${msg}`;
+        await api('LPUSH', 'timer_logs', encodeURIComponent(logMsg));
+        prependLog(logMsg);
+    }
+
+    function prependLog(html) {
+        const container = document.getElementById('logs');
+        const div = document.createElement('div');
+        div.className = 'log-entry';
+        div.innerHTML = decodeURIComponent(html.startsWith('%') ? html : encodeURIComponent(html).replace(/%3C/gi,'<').replace(/%3E/gi,'>'));
+        // Just set innerHTML directly since we control the string
+        div.innerHTML = html;
+        container.insertBefore(div, container.firstChild);
+    }
+
+    // ---- Button states ----
+    function updateUI() {
+        document.getElementById('startBtn').classList.toggle('hidden', isRunning);
+        document.getElementById('resetBtn').classList.toggle('hidden', !isRunning);
+    }
+
+    // ---- Timer actions ----
+    async function startTimer() {
+        if (isRunning) return;
+
+        // First-ever start: seed longest streak to 1 day
+        if (!hasStartedBefore) {
+            hasStartedBefore = true;
+            longestStreakMs = ONE_DAY_MS;
+            updateLongestStreakUI(false);
+            await persistStreakStats();
+        }
+
+        startTime = Date.now();
+        isRunning = true;
+        recordReachedInCurrentRun = false;
+
+        await persistTimerState();
+        await addLogEntry('TIMER_STARTED');
+
+        updateUI();
+        startLocalTimer();
     }
 
     function startLocalTimer() {
         if (intervalId) clearInterval(intervalId);
-        intervalId = setInterval(() => {
-            if (startTime) {
-                const elapsed = Date.now() - startTime;
-                document.getElementById('timer').innerText = formatTime(elapsed);
-                updateCurrentStreak(elapsed);
-            }
-        }, 1000);
+        intervalId = setInterval(tick, 1000);
     }
 
-    function updateUI() {
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        
-        if (isRunning) {
-            startBtn.classList.add('hidden');
-            resetBtn.classList.remove('hidden');
-        } else {
-            startBtn.classList.remove('hidden');
-            resetBtn.classList.add('hidden');
-        }
-    }
-
-    function updateCurrentStreak(elapsed) {
-        document.getElementById('currentStreak').innerText = formatShortTime(elapsed);
-    }
-
-    function updateStats(stats) {
-        document.getElementById('longestStreak').innerText = formatShortTime(stats.longestTime || 0);
-        document.getElementById('totalSessions').innerText = stats.totalSessions || 0;
-        document.getElementById('averageTime').innerText = formatShortTime(stats.averageTime || 0);
-        document.getElementById('longestStreakValue').innerText = formatDays(stats.longestTime || 0);
-    }
-
-    async function startTimer() {
-        if (isRunning) return;
-        startTime = Date.now();
-        isRunning = true;
-        const timestamp = new Date().toLocaleString();
-        const logMsg = `<span>[${timestamp}]</span> TIMER_STARTED`;
-        
-        await api('SET', 'timer_state', JSON.stringify({ startTime, isRunning }));
-        await api('LPUSH', 'timer_logs', encodeURIComponent(logMsg));
-        
-        updateUI();
-        startLocalTimer();
-        sync();
-    }
-
+    // ---- Reset flow ----
     function openResetConfirmation() {
         resetStep = 0;
         updateResetModal();
@@ -681,8 +636,7 @@
         const modal = resetMessages[resetStep];
         document.getElementById('modalTitle').innerText = modal.title;
         document.getElementById('modalText').innerText = modal.text;
-        
-        // Update step indicators
+
         for (let i = 0; i < 3; i++) {
             const step = document.getElementById(`step${i + 1}`);
             if (i < resetStep) {
@@ -699,30 +653,79 @@
 
     async function proceedReset() {
         resetStep++;
-        
         if (resetStep < 3) {
             updateResetModal();
         } else {
-            // Execute reset
             await executeReset();
             closeResetConfirmation();
         }
     }
 
     async function executeReset() {
+        clearInterval(intervalId);
         startTime = null;
         isRunning = false;
-        clearInterval(intervalId);
+        recordReachedInCurrentRun = false;
+
         document.getElementById('timer').innerText = "00:00:00:00";
-        
-        const timestamp = new Date().toLocaleString();
-        const logMsg = `<span>[${timestamp}]</span> TIMER_RESET_BY_USER`;
-        
-        await api('SET', 'timer_state', JSON.stringify({ startTime, isRunning }));
-        await api('LPUSH', 'timer_logs', encodeURIComponent(logMsg));
-        
+        document.getElementById('currentStreak').innerText = "00:00:00:00";
+        updateLongestStreakUI(false);
+
+        await persistTimerState();
+        await addLogEntry('TIMER_RESET_BY_USER');
+
         updateUI();
-        sync();
+    }
+
+    // ---- Sync from Redis on load ----
+    async function sync() {
+        const [stateRes, statsRes, logsRes] = await Promise.all([
+            api('GET', 'timer_state_v2'),
+            api('GET', 'timer_stats_v2'),
+            api('LRANGE', 'timer_logs', '0', '-1')
+        ]);
+
+        // Restore streak stats
+        if (statsRes.result) {
+            try {
+                const stats = JSON.parse(decodeURIComponent(statsRes.result));
+                longestStreakMs = stats.longestStreakMs || 0;
+                hasStartedBefore = stats.hasStartedBefore || false;
+            } catch(e) {}
+        }
+
+        // Restore timer state
+        if (stateRes.result) {
+            try {
+                const state = JSON.parse(decodeURIComponent(stateRes.result));
+                startTime = state.startTime;
+                isRunning = state.isRunning || false;
+
+                if (isRunning && startTime) {
+                    startLocalTimer();
+                } else {
+                    document.getElementById('timer').innerText = "00:00:00:00";
+                    document.getElementById('currentStreak').innerText = "00:00:00:00";
+                }
+            } catch(e) {}
+        }
+
+        // Restore logs
+        const logContainer = document.getElementById('logs');
+        logContainer.innerHTML = '';
+        if (logsRes.result && logsRes.result.length) {
+            logsRes.result.forEach(log => {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = decodeURIComponent(log);
+                logContainer.appendChild(div);
+            });
+        } else {
+            logContainer.innerHTML = '<div class="log-entry">INITIALIZING...</div>';
+        }
+
+        updateLongestStreakUI(false);
+        updateUI();
     }
 
     // Initialize
