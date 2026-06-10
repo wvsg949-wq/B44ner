@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<title>Aashish — Agniveer GD</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--bg2:#0d1f3c;--card:#112240;--card2:#0f1e38;--green:#1db954;--gold:#f5a623;--red:#e63946;--cyan:#00d4ff;--white:#e8f4f8;--gray:#8892a4;--border:rgba(0,212,255,0.15);--glow:0 0 20px rgba(0,212,255,0.2)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'Rajdhani',sans-serif;color:var(--white)}
+#app{position:fixed;top:36px;left:0;right:0;bottom:60px;overflow-y:auto;overflow-x:hidden}
+.page{display:none;padding:13px 12px 20px;min-height:100%}
+.page.active{display:block}
+
+/* SYNC BAR */
+#sbar{position:fixed;top:0;left:0;right:0;z-index:200;height:36px;background:rgba(10,22,40,0.97);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:11px;backdrop-filter:blur(10px)}
+.sdot{width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0;transition:background 0.3s}
+.sdot.green{background:var(--green);box-shadow:0 0 6px var(--green)}
+.sdot.gold{background:var(--gold);animation:pulse 0.8s infinite}
+.sdot.red{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+#smsg{color:var(--gray)}
+.sbtn{background:rgba(0,212,255,0.12);border:1px solid var(--border);color:var(--cyan);border-radius:6px;padding:3px 10px;font-size:10px;cursor:pointer;font-weight:700;font-family:'Rajdhani',sans-serif}
+.sbtn:active{opacity:0.7}
+
+/* NAV */
+#navbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,22,40,0.97);border-top:1px solid var(--border);display:flex;height:60px;backdrop-filter:blur(20px)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;color:var(--gray);font-family:'Rajdhani',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:0.3px;cursor:pointer;transition:color 0.2s}
+.nav-btn.active{color:var(--cyan)}
+.nicon{font-size:18px}
+
+/* CARDS */
+.card{background:var(--card);border-radius:13px;border:1px solid var(--border);padding:12px;margin-bottom:10px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.ctitle{font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan);letter-spacing:1.5px;margin-bottom:8px}
+
+/* HEADER */
+.phead{text-align:center;margin-bottom:13px;padding:13px;border-radius:13px;background:linear-gradient(135deg,#0d2145,#1a3a6e);border:1px solid var(--border)}
+.phead h1{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);letter-spacing:2px}
+.phead p{font-size:11px;color:var(--gray);margin-top:3px}
+
+/* STATS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.sbox{background:var(--card2);border-radius:11px;padding:10px 7px;text-align:center;border:1px solid var(--border)}
+.sval{font-family:'Orbitron',monospace;font-size:17px;font-weight:700;color:var(--cyan)}
+.sval.red{color:var(--red)}.sval.gold{color:var(--gold)}.sval.green{color:var(--green)}
+.slbl{font-size:9px;color:var(--gray);margin-top:2px}
+
+/* SCORE BARS */
+.scrow{margin-bottom:8px}
+.sctop{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.scbg{height:6px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden}
+.scfill{height:100%;border-radius:4px}
+
+/* CHECKLIST */
+.ci{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);margin-bottom:6px;cursor:pointer;transition:all 0.2s;user-select:none}
+.ci.done{border-color:rgba(29,185,84,0.3);background:rgba(29,185,84,0.06)}
+.ccirc{width:22px;height:22px;border-radius:50%;border:2px solid var(--gray);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:transparent;transition:all 0.2s;margin-top:1px}
+.ci.done .ccirc{background:var(--green);border-color:var(--green);color:white}
+.ctxt{font-size:12.5px;font-weight:600;line-height:1.3}
+.csub{font-size:10px;color:var(--gray);margin-top:1px}
+.ci.done .ctxt{color:var(--gray);text-decoration:line-through}
+
+/* PILLS */
+.pills{display:flex;gap:5px;margin-bottom:11px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.pill.active{background:var(--cyan);color:var(--bg);border-color:var(--cyan)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:rgba(0,212,255,0.1);color:var(--cyan);padding:6px 5px;text-align:left;font-size:10px}
+.tbl td{padding:6px 5px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--white);vertical-align:top;line-height:1.4}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.tbl .tr{background:rgba(245,166,35,0.07)!important;border-left:3px solid var(--gold)}
+
+/* BADGES */
+.b{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700}
+.bred{background:rgba(230,57,70,0.2);color:var(--red);border:1px solid rgba(230,57,70,0.3)}
+.bgrn{background:rgba(29,185,84,0.2);color:var(--green);border:1px solid rgba(29,185,84,0.3)}
+.bgld{background:rgba(245,166,35,0.2);color:var(--gold);border:1px solid rgba(245,166,35,0.3)}
+.bcyn{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.25)}
+
+/* SEC HEAD */
+.sh{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1.5px;color:var(--gold);padding:7px 10px;background:rgba(245,166,35,0.07);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;margin-bottom:8px;margin-top:2px}
+
+/* TIMER */
+#bigtimer{font-family:'Orbitron',monospace;font-size:50px;font-weight:900;text-align:center;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.4);letter-spacing:3px;line-height:1}
+.tsub{text-align:center;color:var(--gray);font-size:10px;letter-spacing:1.5px;margin-top:4px}
+
+/* BUTTONS */
+.btn{padding:11px 20px;border-radius:10px;border:none;cursor:pointer;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;font-weight:700;transition:all 0.15s}
+.btn:active{transform:scale(0.95)}
+.bp{background:var(--cyan);color:var(--bg)}
+.bd{background:var(--red);color:white}
+.bg2{background:var(--gold);color:var(--bg)}
+.bo{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan)}
+.bgr{background:var(--green);color:white}
+.bfull{width:100%;padding:12px}
+
+/* MED */
+.mc{border-radius:11px;padding:11px;margin-bottom:7px;border-left:4px solid}
+.ma{background:rgba(29,185,84,0.07);border-color:var(--green)}
+.ms{background:rgba(0,212,255,0.07);border-color:var(--cyan)}
+.mo{background:rgba(245,166,35,0.07);border-color:var(--gold)}
+.mc h4{font-size:12.5px;font-weight:700;margin-bottom:2px}
+.mc p{font-size:10.5px;color:var(--gray);line-height:1.4}
+.dose{font-size:10.5px;color:var(--white);margin-top:5px;background:rgba(255,255,255,0.04);padding:5px 7px;border-radius:6px}
+
+/* REM */
+.rc{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.rtime{font-family:'Orbitron',monospace;font-size:13px;color:var(--gold);font-weight:700;min-width:50px}
+.rinfo{flex:1}
+.rinfo h4{font-size:12px;font-weight:700}
+.rinfo p{font-size:10px;color:var(--gray)}
+.tog{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0}
+.tog:active{opacity:0.8}
+.tog.on{background:var(--cyan)}.tog.off{background:rgba(255,255,255,0.1)}
+.tog::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;transition:left 0.25s}
+.tog.on::after{left:23px}.tog.off::after{left:3px}
+
+/* BOXES */
+.tipbox{background:rgba(29,185,84,0.07);border:1px solid rgba(29,185,84,0.2);border-radius:9px;padding:9px 11px;font-size:11.5px;color:var(--green);margin-bottom:8px}
+.warnbox{background:rgba(230,57,70,0.07);border:1px solid rgba(230,57,70,0.2);border-radius:9px;padding:9px 11px;font-size:11.5px;color:var(--red);margin-bottom:8px}
+.infobox{background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.15);border-radius:9px;padding:9px 11px;font-size:11.5px;color:var(--cyan);margin-bottom:8px}
+
+/* TODAY HL */
+.thl{background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:10px 12px;margin-bottom:9px}
+
+/* TOAST */
+#toast{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);background:var(--green);color:white;padding:9px 18px;border-radius:20px;font-size:12px;font-weight:700;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+
+/* COUNTDOWN */
+.cdbox{background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(230,57,70,0.07));border:1px solid rgba(245,166,35,0.25);border-radius:13px;padding:13px;text-align:center;margin-bottom:10px}
+.cdnum{font-family:'Orbitron',monospace;font-size:40px;font-weight:900;color:var(--gold)}
+
+/* INPUTS */
+.inp{width:100%;background:var(--card2);border:1.5px solid var(--border);border-radius:8px;padding:10px;color:var(--white);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;outline:none;transition:border-color 0.2s}
+.inp:focus{border-color:var(--cyan)}
+.inp::placeholder{color:var(--gray)}
+.ilbl{font-size:10px;color:var(--gray);margin-bottom:4px;letter-spacing:0.5px}
+.igrp{margin-bottom:9px}
+
+/* SETUP STEPS */
+.sstep{display:flex;gap:10px;margin-bottom:11px;align-items:flex-start}
+.snum{background:var(--cyan);color:var(--bg);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sbody h4{font-size:12.5px;font-weight:700;margin-bottom:3px}
+.sbody p{font-size:11px;color:var(--gray);line-height:1.5}
+.cbox{background:#080d1a;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-family:monospace;font-size:11px;color:var(--green);margin-top:4px;word-break:break-all}
+
+/* PHASE BANNER */
+.pbanner{background:linear-gradient(90deg,rgba(27,67,50,0.7),rgba(17,34,64,0.7));border:1px solid var(--green);border-radius:10px;padding:10px 12px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+
+<!-- SYNC BAR -->
+<div id="sbar">
+  <div style="display:flex;align-items:center">
+    <div id="sdot" class="sdot red"></div>
+    <span id="smsg">Offline — add JSONBin key in ONLINE tab</span>
+  </div>
+  <button class="sbtn" onclick="JBIN.saveAll()">☁ Sync Now</button>
+</div>
+
+<div id="app">
+
+<!-- ══════════════════════════════════════════
+     HOME
+══════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="phead">
+    <h1>🇮🇳 AGNIVEER GD</h1>
+    <p>Aashish · Delhi · Day <span id="daynum">1</span> of 40</p>
+  </div>
+
+  <div class="cdbox">
+    <div style="font-size:10px;color:var(--gray);letter-spacing:2px;margin-bottom:2px">DAYS TO EXAM</div>
+    <div class="cdnum" id="daysleft">40</div>
+    <div style="font-size:10px;color:var(--gray);margin-top:3px" id="motiv">Day 2 — Consistency is the key. Show up again! 💪</div>
+  </div>
+
+  <div class="sgrid">
+    <div class="sbox"><div class="sval red">6:15</div><div class="slbl">CURRENT 1600m</div></div>
+    <div class="sbox"><div class="sval green">5:30</div><div class="slbl">TARGET 1600m</div></div>
+    <div class="sbox"><div class="sval gold">18.94</div><div class="slbl">BMI ✅</div></div>
+    <div class="sbox"><div class="sval" id="rdscore">52</div><div class="slbl">READINESS %</div></div>
+  </div>
+
+  <div class="thl">
+    <div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:4px">TODAY — DAY 2 · TUESDAY</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:2px">🏃 Walk-Run Session + 💪 Core Only (15 min)</div>
+    <div style="font-size:11px;color:var(--gray)">5min walk + 10min run × 3 sets · Light core after</div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📊 FITNESS SCORES</div>
+    <div class="scrow"><div class="sctop"><span>🏃 Running</span><span style="color:var(--red)">42/100</span></div><div class="scbg"><div class="scfill" style="width:42%;background:var(--red)"></div></div></div>
+    <div class="scrow"><div class="sctop"><span>💪 Strength</span><span style="color:var(--gold)">50/100</span></div><div class="scbg"><div class="scfill" style="width:50%;background:var(--gold)"></div></div></div>
+    <div class="scrow"><div class="sctop"><span>🔥 Endurance</span><span style="color:var(--gold)">48/100</span></div><div class="scbg"><div class="scfill" style="width:48%;background:var(--gold)"></div></div></div>
+    <div class="scrow"><div class="sctop"><span>🧘 Flexibility</span><span style="color:var(--green)">65/100</span></div><div class="scbg"><div class="scfill" style="width:65%;background:var(--green)"></div></div></div>
+    <div class="scrow"><div class="sctop"><span>🥗 Nutrition</span><span style="color:var(--gold)">55/100</span></div><div class="scbg"><div class="scfill" style="width:55%;background:var(--gold)"></div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">✅ TODAY'S CHECKLIST — DAY 1 MONDAY</div>
+    <div id="clbox"></div>
+    <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+      <span id="clprog" style="font-size:11px;color:var(--gray)">0/12 done</span>
+      <button class="btn bo" style="font-size:10px;padding:5px 11px" onclick="resetCL()">Reset</button>
+    </div>
+  </div>
+
+  <div class="tipbox">💡 Morning run ✅ done — great start! Hit Upper Push at 4:30 PM today.</div>
+  <div class="warnbox">⚠ Primary mission: cut 1600m from 6:15 → 5:30. Interval training starts Day 11.</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TIMER
+══════════════════════════════════════════ -->
+<div class="page" id="page-timer">
+  <div class="phead"><h1>⏱ 1600m TIMER</h1><p>Track every run · see your progress</p></div>
+
+  <div class="card" style="text-align:center;padding:22px 12px">
+    <div id="bigtimer">00:00.0</div>
+    <div class="tsub">TARGET → 05:30.0 &nbsp;|&nbsp; BEST → <span id="curbest">--:--.-</span></div>
+    <div style="margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn bp" id="btnstart" onclick="startTimer()">START</button>
+      <button class="btn bo" id="btnlap" onclick="lapTimer()">LAP</button>
+      <button class="btn bd" id="btnreset" onclick="resetTimer()">RESET</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">🏁 LAP SPLITS</div>
+    <div id="laplist"><div style="color:var(--gray);font-size:11px;text-align:center;padding:10px">Press LAP at each 400m</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">🎯 LAP TARGETS (Sub 5:30)</div>
+    <table class="tbl">
+      <tr><th>Lap</th><th>Distance</th><th>Target</th><th>Total</th></tr>
+      <tr><td>1</td><td>0–400m</td><td>1:20</td><td>1:20</td></tr>
+      <tr><td>2</td><td>400–800m</td><td>1:22</td><td>2:42</td></tr>
+      <tr><td>3</td><td>800–1200m</td><td>1:22</td><td>4:04</td></tr>
+      <tr><td>4</td><td>1200–1600m</td><td>1:18 💨</td><td style="color:var(--green)">5:22 ✅</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📈 SAVED RUNS</div>
+    <div id="besttimes"><div style="color:var(--gray);font-size:11px;text-align:center;padding:8px">No runs saved yet</div></div>
+    <button class="btn bgr bfull" style="margin-top:9px;font-size:11px" onclick="saveRun()">💾 SAVE THIS RUN</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PLAN
+══════════════════════════════════════════ -->
+<div class="page" id="page-plan">
+  <div class="phead"><h1>📋 40-DAY PLAN</h1><p>Running · Strength · Diet · Medicine · Timetable</p></div>
+
+  <div class="pbanner">
+    <div><div style="font-size:9px;color:var(--gray);letter-spacing:1px">CURRENT PHASE</div><div style="font-size:13px;font-weight:700;color:var(--green)">Phase 1 — Base Building</div><div style="font-size:10px;color:var(--gray)">Day 2 of 10</div></div>
+    <div style="text-align:right"><div style="font-size:9px;color:var(--gray)">DAYS</div><div style="font-family:'Orbitron',monospace;font-size:16px;color:var(--gold)">1–10</div></div>
+  </div>
+
+  <div class="pills" id="plantabs">
+    <div class="pill active" onclick="showPlan('running',this)">🏃 Running</div>
+    <div class="pill" onclick="showPlan('strength',this)">💪 Strength</div>
+    <div class="pill" onclick="showPlan('diet',this)">🥗 Diet</div>
+    <div class="pill" onclick="showPlan('medicine',this)">💊 Medicine</div>
+    <div class="pill" onclick="showPlan('timetable',this)">⏰ Timetable</div>
+    <div class="pill" onclick="showPlan('stretch',this)">🧘 Stretch</div>
+  </div>
+
+  <div id="plan-running">
+    <div class="sh">PHASE 1 — DAYS 1–10: BASE BUILDING</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Session</th><th>Details</th></tr>
+      <tr><td>1</td><td>Easy Run</td><td>3km easy · breathe through nose ✅ DONE</td></tr>
+      <tr class="tr"><td><b style="color:var(--gold)">2⭐</b></td><td>Walk-Run</td><td>5min walk + 10min run × 3 sets — TODAY</td></tr>
+      <tr><td>3</td><td>Easy Run</td><td>3.5km continuous easy</td></tr>
+      <tr><td>4</td><td><span class="b bgrn">REST</span></td><td>Stretching only — 20 min</td></tr>
+      <tr><td>5</td><td>Fartlek</td><td>3km + 3×(1min fast, 2min easy)</td></tr>
+      <tr><td>6</td><td>Easy Run</td><td>4km easy</td></tr>
+      <tr><td>7</td><td><span class="b bred">TIME TRIAL</span></td><td>1600m — target sub 6:00</td></tr>
+      <tr><td>8</td><td>Easy Run</td><td>3km recovery</td></tr>
+      <tr><td>9</td><td>Strides</td><td>3km + 6×100m fast strides</td></tr>
+      <tr><td>10</td><td><span class="b bgrn">REST</span></td><td>Full rest</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">PHASE 2 — DAYS 11–20: SPEED (Target: Sub 5:45)</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Session</th><th>Details</th></tr>
+      <tr><td>11</td><td>Intervals</td><td>6×400m race pace, 90s rest — each ~2:12</td></tr>
+      <tr><td>12</td><td>Tempo</td><td>2km warmup + 2km race pace + cooldown</td></tr>
+      <tr><td>13</td><td>Easy Run</td><td>4km recovery</td></tr>
+      <tr><td>14</td><td><span class="b bgrn">REST</span></td><td>Stretch + rest</td></tr>
+      <tr><td>15</td><td>Intervals</td><td>8×400m, 75s rest — each ~2:05</td></tr>
+      <tr><td>16</td><td>Tempo</td><td>3km at race pace</td></tr>
+      <tr><td>17</td><td><span class="b bred">TIME TRIAL</span></td><td>1600m — target 5:50</td></tr>
+      <tr><td>18</td><td>Easy Run</td><td>4km easy</td></tr>
+      <tr><td>19</td><td>Hills</td><td>6×30s uphill sprint, walk back</td></tr>
+      <tr><td>20</td><td><span class="b bgrn">REST</span></td><td>Full rest</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">PHASE 3 — DAYS 21–30: RACE PACE (Target: Sub 5:33)</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Session</th><th>Details</th></tr>
+      <tr><td>21</td><td>Intervals</td><td>10×400m race pace, 60s rest — each 2:00</td></tr>
+      <tr><td>22</td><td>Tempo</td><td>4km at race pace</td></tr>
+      <tr><td>23</td><td>Easy Run</td><td>5km easy recovery</td></tr>
+      <tr><td>24</td><td><span class="b bgrn">REST</span></td><td>Stretch + rest</td></tr>
+      <tr><td>25</td><td>1200m Reps</td><td>3×1200m race pace, 2min rest — each 4:05</td></tr>
+      <tr><td>26</td><td>Easy Run</td><td>4km easy</td></tr>
+      <tr><td>27</td><td><span class="b bred">TIME TRIAL</span></td><td>1600m — target 5:35</td></tr>
+      <tr><td>28</td><td>Easy Run</td><td>3km very easy</td></tr>
+      <tr><td>29</td><td>Strides</td><td>3km + 8×100m sprint strides</td></tr>
+      <tr><td>30</td><td><span class="b bgrn">REST</span></td><td>Full rest</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">PHASE 4 — DAYS 31–40: PEAK &amp; TAPER (Target: Sub 5:25)</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Session</th><th>Details</th></tr>
+      <tr><td>31</td><td>Intervals</td><td>6×400m fast, 90s rest — each 1:55</td></tr>
+      <tr><td>32</td><td>Tempo</td><td>2km warmup + 3km race pace</td></tr>
+      <tr><td>33</td><td>Easy Run</td><td>4km easy — fresh legs</td></tr>
+      <tr><td>34</td><td><span class="b bgrn">REST</span></td><td>Full rest</td></tr>
+      <tr><td>35</td><td>Strides</td><td>3km + 6×100m strides</td></tr>
+      <tr><td>36</td><td><span class="b bred">TIME TRIAL</span></td><td>1600m simulation — target 5:25</td></tr>
+      <tr><td>37</td><td>Easy Run</td><td>3km very easy</td></tr>
+      <tr><td>38</td><td>Light</td><td>2km jog + strides</td></tr>
+      <tr><td>39</td><td><span class="b bgrn">REST</span></td><td>Full rest — sleep 9 hours</td></tr>
+      <tr><td>40</td><td><span class="b bred">EXAM 🎯</span></td><td>10min warmup → Sub 5:30 → JAI HIND ✅</td></tr>
+    </table>
+  </div>
+
+  <div id="plan-strength" style="display:none">
+    <div class="thl"><div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:3px">TODAY — TUESDAY CORE ONLY (4:30 PM)</div><div style="font-size:12px">Walk-Run this morning · 15 min core after rest</div></div>
+    <div class="sh">WEEKLY SPLIT</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Focus</th><th>Time</th></tr>
+      <tr><td>Mon</td><td>Upper Push — Chest, Shoulders, Triceps ✅</td><td>30 min</td></tr>
+      <tr class="tr"><td><b style="color:var(--gold)">Tue⭐</b></td><td>Running Day + Core Only — TODAY</td><td>15 min</td></tr>
+      <tr><td>Wed</td><td>Lower Body — Legs, Glutes, Calves</td><td>30 min</td></tr>
+      <tr><td>Thu</td><td>REST — Stretching &amp; Mobility</td><td>20 min</td></tr>
+      <tr><td>Fri</td><td>Pull Strength — Back, Biceps, Pull-ups</td><td>30 min</td></tr>
+      <tr><td>Sat</td><td>Full Body Circuit + Core</td><td>35 min</td></tr>
+      <tr><td>Sun</td><td>REST — Active recovery walk</td><td>20 min</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">TUESDAY — CORE ONLY (15 min at 4:30 PM)</div>
+    <table class="tbl">
+      <tr><th>Exercise</th><th>Sets×Reps</th><th>Notes</th></tr>
+      <tr><td>Plank</td><td>3 × 60s</td><td>Body flat, breathe steady</td></tr>
+      <tr><td>Mountain Climbers</td><td>3 × 30s</td><td>Fast knees — core + cardio</td></tr>
+      <tr><td>Crunches</td><td>3 × 20</td><td>Controlled, don't yank neck</td></tr>
+      <tr><td>Leg Raises</td><td>3 × 15</td><td>Lower abs — keep legs straight</td></tr>
+      <tr><td>Russian Twists</td><td>3 × 20</td><td>Obliques — twist slow</td></tr>
+    </table>
+    <div class="tipbox">💡 Tuesday is a running day — keep strength SHORT (15 min). Save energy for tomorrow's lower body session.</div>
+    <div class="sh" style="margin-top:10px">WEDNESDAY — LOWER BODY</div>
+    <table class="tbl">
+      <tr><th>Exercise</th><th>Sets×Reps</th><th>Notes</th></tr>
+      <tr><td>Bodyweight Squats</td><td>4 × 25</td><td>Deep squat — glutes</td></tr>
+      <tr><td>Lunges</td><td>3 × 20/leg</td><td>Running power</td></tr>
+      <tr><td>Jump Squats</td><td>3 × 15</td><td>Explosive power</td></tr>
+      <tr><td>Calf Raises</td><td>4 × 30</td><td>Critical for runners</td></tr>
+      <tr><td>Single-leg Squat</td><td>3 × 8/leg</td><td>Balance + knees</td></tr>
+      <tr><td>Glute Bridges</td><td>3 × 20</td><td>Protects knees</td></tr>
+      <tr><td>High Knees</td><td>3 × 30s</td><td>Running specific</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">FRIDAY — PULL STRENGTH</div>
+    <table class="tbl">
+      <tr><th>Exercise</th><th>Sets×Reps</th><th>Notes</th></tr>
+      <tr><td>Pull-ups</td><td>4 × Max</td><td>Build 7 → 12+ reps</td></tr>
+      <tr><td>Negative Pull-ups</td><td>3 × 6</td><td>Jump up, lower slowly 5s</td></tr>
+      <tr><td>Chin-ups</td><td>3 × Max</td><td>Easier than pull-ups</td></tr>
+      <tr><td>Inverted Rows</td><td>3 × 12</td><td>Under table or bar</td></tr>
+      <tr><td>Dead Hang</td><td>3 × 30s</td><td>Grip + shoulder health</td></tr>
+      <tr><td>Superman Hold</td><td>3 × 15</td><td>Lower back strength</td></tr>
+    </table>
+  </div>
+
+  <div id="plan-diet" style="display:none">
+    <div class="sh">DAILY NUTRITION TARGETS</div>
+    <table class="tbl">
+      <tr><th>Nutrient</th><th>Target</th><th>Why</th></tr>
+      <tr><td>Calories</td><td>2,400–2,600</td><td>Fuel + muscle repair</td></tr>
+      <tr><td>Protein</td><td>90–100g/day</td><td>Muscle building</td></tr>
+      <tr><td>Carbs</td><td>320–350g/day</td><td>Running energy</td></tr>
+      <tr><td>Water</td><td>3.5–4 litres</td><td>Delhi heat + training</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">DAILY MEALS (₹150–200/day)</div>
+    <table class="tbl">
+      <tr><th>Time</th><th>Food</th><th>Cost</th></tr>
+      <tr class="tr"><td>5:10 AM</td><td>2 bananas + soaked chana OR milk</td><td>₹12</td></tr>
+      <tr class="tr"><td>7:00 AM</td><td>Roti + sabzi + milk — Tuesday breakfast</td><td>₹35</td></tr>
+      <tr><td>10:30 AM</td><td>Roasted chana + banana OR peanuts</td><td>₹12</td></tr>
+      <tr><td>1:30 PM</td><td>Roti + rajma/dal + rice + sabzi + curd</td><td>₹40</td></tr>
+      <tr><td>5:00 PM</td><td>Peanut butter roti OR sprouts chaat</td><td>₹18</td></tr>
+      <tr><td>7:30 PM</td><td>Roti + dal/paneer + sabzi</td><td>₹35</td></tr>
+      <tr><td>9:45 PM</td><td>Haldi doodh — milk + turmeric + pepper</td><td>₹10</td></tr>
+    </table>
+    <div class="tipbox" style="margin-top:8px">💡 Squeeze lemon on EVERY meal — triples iron absorption FREE!</div>
+    <div class="sh" style="margin-top:10px">WEEKLY ROTATION</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>
+      <tr><td>Mon</td><td>Poha+milk ✅</td><td>Dal+roti+rice ✅</td><td>Rajma+roti ✅</td></tr>
+      <tr class="tr"><td><b style="color:var(--gold)">Tue⭐</b></td><td>Roti+sabzi+milk</td><td>Chole+roti+curd</td><td>Dal+roti</td></tr>
+      <tr><td>Wed</td><td>Upma+milk</td><td>Soybean+roti</td><td>Moong dal+roti</td></tr>
+      <tr><td>Thu</td><td>Paratha+curd</td><td>Rajma+roti+rice</td><td>Mix veg+roti</td></tr>
+      <tr><td>Fri</td><td>Poha+milk</td><td>Dal makhani+roti</td><td>Paneer+roti</td></tr>
+      <tr><td>Sat</td><td>Roti+dal+milk</td><td>Chole+rice</td><td>Dal+sabzi+roti</td></tr>
+      <tr><td>Sun</td><td>Dalia+milk</td><td>Paneer+roti+salad</td><td>Light dal+roti</td></tr>
+    </table>
+  </div>
+
+  <div id="plan-medicine" style="display:none">
+    <div class="warnbox">⚠ Consult a doctor before starting medicines. General guidance only.</div>
+    <div class="sh">💰 BUY IN THIS ORDER</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Item</th><th>Cost</th><th>Priority</th></tr>
+      <tr><td>1</td><td>Limcee Vitamin C 500mg</td><td>₹40</td><td><span class="b bred">MUST</span></td></tr>
+      <tr><td>2</td><td>ORS / Electral sachets</td><td>₹50</td><td><span class="b bred">MUST</span></td></tr>
+      <tr><td>3</td><td>Ashwagandha (Patanjali)</td><td>₹150</td><td><span class="b bgld">HIGH</span></td></tr>
+      <tr><td>4</td><td>Multivitamin (Revital H)</td><td>₹200</td><td><span class="b bgld">HIGH</span></td></tr>
+      <tr><td>5</td><td>Shilajit (Dabur)</td><td>₹350</td><td><span class="b bcyn">GOOD</span></td></tr>
+      <tr><td>6</td><td>Vitamin D3</td><td>₹120</td><td><span class="b bcyn">GOOD</span></td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">🌿 AYURVEDIC</div>
+    <div class="mc ma"><h4>Ashwagandha</h4><p>Strength, stamina, testosterone, recovery</p><div class="dose">📌 300–500mg · After dinner · Patanjali · ₹150/month</div></div>
+    <div class="mc ma"><h4>Shilajit</h4><p>Energy, endurance, iron absorption, VO2 max</p><div class="dose">📌 250mg · Morning empty stomach · Dabur · ₹350/month</div></div>
+    <div class="mc ma"><h4>Amla</h4><p>Vitamin C, immunity, iron absorption</p><div class="dose">📌 1 amla or 2 tsp juice · Morning · ₹40/month</div></div>
+    <div class="mc ma"><h4>Mulethi (Liquorice)</h4><p>Lung capacity, breathing endurance</p><div class="dose">📌 ½ tsp in warm milk · Night · Patanjali · ₹60/month</div></div>
+    <div class="sh" style="margin-top:10px">⚡ SPORTS SUPPLEMENTS</div>
+    <div class="mc ms"><h4>Vitamin C — Limcee 500mg ⭐ #1</h4><p>Triples iron absorption — biggest impact per rupee</p><div class="dose">📌 1 tab after breakfast · Any chemist · ₹2/tab</div></div>
+    <div class="mc ms"><h4>ORS / Electral ⭐ #2</h4><p>Prevents cramps in Delhi heat</p><div class="dose">📌 1 sachet in 1L water during long runs · ₹5/sachet</div></div>
+    <div class="mc ms"><h4>Multivitamin (Revital H)</h4><p>Covers all veg diet nutritional gaps</p><div class="dose">📌 1 tab with breakfast · Any chemist · ₹200/month</div></div>
+    <div class="mc ms"><h4>Creatine Monohydrate</h4><p>Sprint power + strength improvement</p><div class="dose">📌 5g/day post-workout · AS-IT-IS brand · ₹500/month</div></div>
+    <div class="sh" style="margin-top:10px">💊 OTC — WHEN NEEDED</div>
+    <div class="mc mo"><h4>Combiflam / Brufen</h4><p>Muscle/joint pain after hard sessions</p><div class="dose">📌 1 tab AFTER food only · Max 3 days · NOT before runs</div></div>
+    <div class="mc mo"><h4>Volini Gel / Moov</h4><p>Local soreness, shin or knee pain</p><div class="dose">📌 Apply + massage · External only · Not before training</div></div>
+    <div class="mc mo"><h4>Crocin (Paracetamol)</h4><p>Fever, headache</p><div class="dose">📌 1 tab after food · Not for muscle pain during training</div></div>
+    <div class="sh" style="margin-top:10px">🏠 FREE HOMEMADE</div>
+    <div class="mc ma"><h4>Haldi Doodh (Every Night)</h4><div class="dose">📌 Warm milk + ¼ tsp turmeric + pinch black pepper</div></div>
+    <div class="mc ma"><h4>Homemade ORS (During Runs)</h4><div class="dose">📌 1L water + ¼ tsp salt + 2 tsp sugar + lemon juice</div></div>
+    <div class="mc ma"><h4>Natural Protein Shake</h4><div class="dose">📌 Milk + 2 tbsp peanut butter + 1 banana — mix/blend</div></div>
+  </div>
+
+  <div id="plan-timetable" style="display:none">
+    <div class="thl"><div style="font-size:10px;color:var(--gold);margin-bottom:3px">TODAY — TUESDAY</div><div style="font-size:12px">Walk-Run morning · Core 15 min at 4:30 PM</div></div>
+    <table class="tbl">
+      <tr><th>Time</th><th>Activity</th><th>Notes</th></tr>
+      <tr class="tr"><td>5:00 AM</td><td>Wake up</td><td>500ml water immediately</td></tr>
+      <tr class="tr"><td>5:10 AM</td><td>Pre-workout fuel</td><td>Banana + chana or milk</td></tr>
+      <tr class="tr"><td>5:30 AM</td><td>🏃 WALK-RUN</td><td>5min walk + 10min run × 3 — Day 2</td></tr>
+      <tr class="tr"><td>7:00 AM</td><td>Breakfast</td><td>Dal + roti + milk within 30 min</td></tr>
+      <tr><td>10:30 AM</td><td>Snack</td><td>Chana / peanuts / banana</td></tr>
+      <tr><td>1:30 PM</td><td>Lunch</td><td>Biggest meal of the day</td></tr>
+      <tr><td>2:00 PM</td><td>Power nap</td><td>20 min MAX</td></tr>
+      <tr><td>4:30 PM</td><td>💪 CORE ONLY</td><td>15 min — plank, climbers, crunches</td></tr>
+      <tr><td>5:15 PM</td><td>Snack</td><td>Peanut roti or sprouts</td></tr>
+      <tr><td>7:30 PM</td><td>Dinner</td><td>Roti + dal + sabzi</td></tr>
+      <tr><td>9:00 PM</td><td>Stretch</td><td>15 min static stretches</td></tr>
+      <tr><td>9:30 PM</td><td>Screen OFF 📵</td><td>Blue light ruins sleep</td></tr>
+      <tr><td>9:45 PM</td><td>Haldi milk 🥛</td><td>Milk + turmeric</td></tr>
+      <tr><td>10:00 PM</td><td>😴 SLEEP</td><td>7.5 hrs — non-negotiable</td></tr>
+    </table>
+  </div>
+
+  <div id="plan-stretch" style="display:none">
+    <div class="sh">PRE-RUN DYNAMIC (10 min — Before every run)</div>
+    <table class="tbl">
+      <tr><th>Exercise</th><th>Reps</th><th>Target</th></tr>
+      <tr><td>Leg Swings (front/back)</td><td>15/leg</td><td>Hip flexors, hamstrings</td></tr>
+      <tr><td>Leg Swings (side)</td><td>15/leg</td><td>Groin, outer hip</td></tr>
+      <tr><td>Arm Circles</td><td>20 each way</td><td>Shoulders</td></tr>
+      <tr><td>High Knees (slow)</td><td>30 sec</td><td>Hip flexors, quads</td></tr>
+      <tr><td>Butt Kicks</td><td>30 sec</td><td>Hamstrings, glutes</td></tr>
+      <tr><td>Hip Circles</td><td>10 each way</td><td>Hip mobility</td></tr>
+      <tr><td>Ankle Rotations</td><td>15/foot</td><td>Ankle flexibility</td></tr>
+      <tr><td>Inchworm Walk</td><td>6 reps</td><td>Hamstrings + core</td></tr>
+      <tr><td>Easy Jog</td><td>2 min</td><td>Full body activation</td></tr>
+    </table>
+    <div class="sh" style="margin-top:10px">POST-RUN STATIC (15 min — After every run, hold 45s)</div>
+    <table class="tbl">
+      <tr><th>Stretch</th><th>Hold</th><th>How</th></tr>
+      <tr><td>Standing Quad</td><td>45s/leg</td><td>Pull foot to glute</td></tr>
+      <tr><td>Seated Hamstring</td><td>45s/leg</td><td>Reach for toes</td></tr>
+      <tr><td>Hip Flexor Lunge</td><td>45s/side</td><td>Lunge, drop back knee</td></tr>
+      <tr><td>Calf Stretch (wall)</td><td>45s/leg</td><td>Wall push, heel flat</td></tr>
+      <tr><td>Seated Butterfly</td><td>60s</td><td>Feet together, press knees</td></tr>
+      <tr><td>Pigeon Pose</td><td>60s/side</td><td>Cross leg front, lean forward</td></tr>
+      <tr><td>Child's Pose</td><td>60s</td><td>Kneel, arms stretched forward</td></tr>
+      <tr><td>Chest Opener</td><td>30s</td><td>Hands behind back</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     REMINDERS
+══════════════════════════════════════════ -->
+<div class="page" id="page-reminders">
+  <div class="phead"><h1>🔔 DAILY REMINDERS</h1><p>Tap toggle to enable each alarm</p></div>
+  <div class="infobox">Tap a toggle → app asks permission → Allow → daily alarms activate ✅</div>
+  <div class="card">
+    <div class="ctitle">⚡ TRAINING ALARMS</div>
+    <div class="rc"><div class="rtime">5:00</div><div class="rinfo"><h4>🌅 WAKE UP!</h4><p>500ml water immediately</p></div><button class="tog on" onclick="togRem(this,'🌅 Wake Up! 500ml water + fuel up NOW')"></button></div>
+    <div class="rc"><div class="rtime">5:20</div><div class="rinfo"><h4>🏃 Warm-Up</h4><p>10 min dynamic before run</p></div><button class="tog on" onclick="togRem(this,'🏃 Start Warm-Up — 10 min dynamic now')"></button></div>
+    <div class="rc"><div class="rtime">5:30</div><div class="rinfo"><h4>🚀 RUN NOW</h4><p>Main training session</p></div><button class="tog on" onclick="togRem(this,'🚀 RUN NOW — Agniveer GD training. Jai Hind!')"></button></div>
+    <div class="rc"><div class="rtime">7:00</div><div class="rinfo"><h4>🥣 Post-Run Meal</h4><p>Dal + roti + milk — within 30 min</p></div><button class="tog on" onclick="togRem(this,'🥣 Eat NOW — Dal + roti + milk within 30 min of run!')"></button></div>
+    <div class="rc"><div class="rtime">10:30</div><div class="rinfo"><h4>🥜 Mid Snack</h4><p>Chana / peanuts / banana</p></div><button class="tog on" onclick="togRem(this,'🥜 Snack Time — Chana / peanuts / banana')"></button></div>
+    <div class="rc"><div class="rtime">13:30</div><div class="rinfo"><h4>🍱 LUNCH</h4><p>Biggest meal — roti + dal + rice</p></div><button class="tog on" onclick="togRem(this,'🍱 Lunch Time — Biggest meal of the day!')"></button></div>
+    <div class="rc"><div class="rtime">14:00</div><div class="rinfo"><h4>😴 Power Nap</h4><p>20 min only — 30% better PM</p></div><button class="tog on" onclick="togRem(this,'😴 Power Nap — 20 min MAX. Set alarm!')"></button></div>
+    <div class="rc"><div class="rtime">16:30</div><div class="rinfo"><h4>💪 STRENGTH</h4><p>Bodyweight — per today's plan</p></div><button class="tog on" onclick="togRem(this,'💪 Strength Training — Start now! Per plan.')"></button></div>
+    <div class="rc"><div class="rtime">19:30</div><div class="rinfo"><h4>🍽 DINNER</h4><p>Roti + dal + sabzi</p></div><button class="tog on" onclick="togRem(this,'🍽 Dinner Time — Roti + dal + sabzi')"></button></div>
+    <div class="rc"><div class="rtime">21:00</div><div class="rinfo"><h4>🧘 Stretch</h4><p>15 min static stretching</p></div><button class="tog on" onclick="togRem(this,'🧘 Stretch Time — 15 min static stretches')"></button></div>
+    <div class="rc"><div class="rtime">21:30</div><div class="rinfo"><h4>📵 Phone Down</h4><p>Protect sleep quality</p></div><button class="tog on" onclick="togRem(this,'📵 PUT PHONE DOWN — Protect your sleep!')"></button></div>
+    <div class="rc"><div class="rtime">21:45</div><div class="rinfo"><h4>🥛 Haldi Milk</h4><p>Warm milk + turmeric</p></div><button class="tog on" onclick="togRem(this,'🥛 Haldi Milk — Warm milk + turmeric + pepper')"></button></div>
+    <div class="rc"><div class="rtime">22:00</div><div class="rinfo"><h4>😴 SLEEP NOW</h4><p>7.5 hours — non-negotiable</p></div><button class="tog on" onclick="togRem(this,'😴 SLEEP NOW — 7.5 hours. Grow stronger tonight!')"></button></div>
+  </div>
+  <div class="card">
+    <div class="ctitle">💊 MEDICINE ALARMS</div>
+    <div class="rc"><div class="rtime">7:10</div><div class="rinfo"><h4>💊 Vitamin C</h4><p>1 Limcee tab after breakfast</p></div><button class="tog on" onclick="togRem(this,'💊 Vitamin C — 1 Limcee tab after breakfast NOW')"></button></div>
+    <div class="rc"><div class="rtime">7:15</div><div class="rinfo"><h4>💊 Multivitamin</h4><p>1 Revital H with breakfast</p></div><button class="tog off" onclick="togRem(this,'💊 Multivitamin — 1 Revital H with breakfast')"></button></div>
+    <div class="rc"><div class="rtime">6:30</div><div class="rinfo"><h4>🌿 Shilajit</h4><p>1 capsule empty stomach</p></div><button class="tog off" onclick="togRem(this,'🌿 Shilajit — 1 capsule morning empty stomach')"></button></div>
+    <div class="rc"><div class="rtime">21:10</div><div class="rinfo"><h4>🌿 Ashwagandha</h4><p>1 capsule after dinner</p></div><button class="tog off" onclick="togRem(this,'🌿 Ashwagandha — 1 capsule after dinner tonight')"></button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TRACKER
+══════════════════════════════════════════ -->
+<div class="page" id="page-tracker">
+  <div class="phead"><h1>📊 PROGRESS TRACKER</h1><p>Log every session · watch yourself improve</p></div>
+  <div class="card">
+    <div class="ctitle">📝 LOG TODAY — DAY <span id="logday">1</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div class="igrp"><div class="ilbl">1600m TIME (mm:ss)</div><input id="i-time" class="inp" type="text" placeholder="e.g. 6:15" style="font-family:'Orbitron',monospace"></div>
+      <div class="igrp"><div class="ilbl">PUSH-UPS (max)</div><input id="i-push" class="inp" type="number" placeholder="e.g. 28"></div>
+      <div class="igrp"><div class="ilbl">PULL-UPS (max)</div><input id="i-pull" class="inp" type="number" placeholder="e.g. 7"></div>
+      <div class="igrp"><div class="ilbl">ENERGY (1–10)</div><input id="i-energy" class="inp" type="number" min="1" max="10" placeholder="e.g. 8"></div>
+    </div>
+    <div class="igrp"><div class="ilbl">NOTES</div><input id="i-notes" class="inp" type="text" placeholder="How did today feel?"></div>
+    <button class="btn bp bfull" style="margin-top:2px" onclick="saveEntry()">💾 SAVE LOG</button>
+  </div>
+  <div class="card">
+    <div class="ctitle">🎯 CURRENT vs TARGET</div>
+    <table class="tbl">
+      <tr><th>Metric</th><th>Day 1</th><th>My Best</th><th>Target</th></tr>
+      <tr><td>1600m</td><td>6:15</td><td id="b1600" style="color:var(--gold)">6:15</td><td style="color:var(--green)">5:30</td></tr>
+      <tr><td>Push-ups</td><td>~28</td><td id="bpush">—</td><td style="color:var(--green)">40+</td></tr>
+      <tr><td>Pull-ups</td><td>~7</td><td id="bpull">—</td><td style="color:var(--green)">12+</td></tr>
+      <tr><td>Energy</td><td>6/10</td><td id="benergy">—</td><td style="color:var(--green)">9/10</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="ctitle">📅 WEEKLY MILESTONES</div>
+    <table class="tbl">
+      <tr><th>Week</th><th>Goal</th><th>My Time</th><th>Status</th></tr>
+      <tr class="tr"><td>Week 1</td><td>Sub 6:00</td><td>—</td><td>🟡 Now</td></tr>
+      <tr><td>Week 2</td><td>Sub 5:50</td><td>—</td><td>⬜</td></tr>
+      <tr><td>Week 3</td><td>Sub 5:35</td><td>—</td><td>⬜</td></tr>
+      <tr><td>Week 4</td><td>Sub 5:30</td><td>—</td><td>⬜</td></tr>
+      <tr><td>EXAM</td><td style="color:var(--green)">Sub 5:30 ✅</td><td>—</td><td>🎯</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="ctitle">📈 PROGRESS LOG</div>
+    <div id="proglog"><div style="color:var(--gray);font-size:11px;text-align:center;padding:12px">No entries yet. Log your first session above!</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ONLINE / JSONBIN
+══════════════════════════════════════════ -->
+<div class="page" id="page-online">
+  <div class="phead"><h1>🌐 SAVE DATA ONLINE</h1><p>JSONBin + GitHub Pages — both free forever</p></div>
+
+  <!-- JSONBIN SETUP - MAIN SECTION -->
+  <div class="card">
+    <div class="ctitle">⚡ UPSTASH REDIS — ALREADY CONNECTED</div>
+    <div class="tipbox">Your app uses Upstash Redis for cloud storage. It's already configured — nothing to set up!</div>
+    <div class="sstep">
+      <div class="snum">✅</div>
+      <div class="sbody"><h4>Database</h4><p><b style="color:var(--cyan)">deep-burro-120847.upstash.io</b> — your private Redis instance</p></div>
+    </div>
+    <div class="sstep">
+      <div class="snum">✅</div>
+      <div class="sbody"><h4>Auto-sync</h4><p>Every run log, checklist tick, and timer save syncs to cloud automatically</p></div>
+    </div>
+    <div class="sstep">
+      <div class="snum">✅</div>
+      <div class="sbody"><h4>Any Device</h4><p>Open the app on any phone → tap Load from Cloud → all your data appears instantly</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">🔑 STEP 2 — PASTE YOUR API KEY HERE</div>
+    <div class="igrp">
+      <div class="ilbl">JSONBIN MASTER API KEY (starts with $2b$10$...)</div>
+      <input id="jkey" class="inp" type="password" placeholder="Key pre-loaded ✅" readonly style="color:var(--green);cursor:not-allowed" oninput="JBIN.setKey(this.value)">
+    </div>
+    <button class="btn bp bfull" style="margin-top:4px" onclick="JBIN.setKey(document.getElementById('jkey').value);showToast('✅ Key saved!')">💾 SAVE KEY</button>
+    <div style="margin-top:8px" id="keystatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📦 STEP 3 — SYNC YOUR DATA</div>
+    <div class="igrp">
+      <div class="ilbl">BIN ID (auto-filled after first save — or paste manually)</div>
+      <input id="jbin" class="inp" type="text" placeholder="Auto-generated — or paste your bin ID" oninput="JBIN.setBin(this.value)">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+      <button class="btn bp" style="padding:12px;font-size:11px" onclick="JBIN.saveAll()">☁️ Save to Cloud</button>
+      <button class="btn bo" style="padding:12px;font-size:11px" onclick="JBIN.loadAll()">⬇️ Load from Cloud</button>
+    </div>
+    <div class="tipbox" style="margin-top:9px">💡 After first Save — your Bin ID auto-appears above. Copy it and save it somewhere safe — it's your data address.</div>
+    <div class="infobox">What gets saved: Progress log · Timer runs · Checklists · Start date · All your data ✅</div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">🌐 GITHUB PAGES — PUT APP ONLINE FREE</div>
+    <div class="sstep"><div class="snum">1</div><div class="sbody"><h4>Create GitHub Account</h4><p>Go to <b style="color:var(--cyan)">github.com</b> → Sign up free with any email</p></div></div>
+    <div class="sstep"><div class="snum">2</div><div class="sbody"><h4>Create New Repository</h4><p>Click <b>+</b> → New repository → Name: <b style="color:var(--gold)">agniveer-app</b> → Public → Create</p></div></div>
+    <div class="sstep"><div class="snum">3</div><div class="sbody"><h4>Upload Files</h4><p>Click <b>uploading an existing file</b> → drag index.html + manifest.json + sw.js + icon.png → Commit changes</p></div></div>
+    <div class="sstep"><div class="snum">4</div><div class="sbody"><h4>Enable GitHub Pages</h4><p>Settings → Pages → Source: main branch → Save → Wait 2 min</p></div></div>
+    <div class="sstep"><div class="snum">5</div><div class="sbody"><h4>Your URL is Live!</h4><div class="cbox">https://YOUR-USERNAME.github.io/agniveer-app</div></div></div>
+    <div class="sstep"><div class="snum">6</div><div class="sbody"><h4>Get Real APK</h4><p>Go to <b style="color:var(--cyan)">pwabuilder.com</b> → paste your URL → Download APK → Install on phone ✅</p></div></div>
+    <div class="igrp" style="margin-top:8px">
+      <div class="ilbl">YOUR APP URL (save it here)</div>
+      <input id="myurl" class="inp" type="url" placeholder="https://your-username.github.io/agniveer-app" oninput="saveMyUrl()">
+    </div>
+    <button class="btn bgr bfull" style="margin-top:4px;font-size:11px" onclick="openMyApp()">🌐 Open My App</button>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">✨ OTHER FREE SERVICES</div>
+    <table class="tbl">
+      <tr><th>Feature</th><th>Service</th></tr>
+      <tr><td>📊 Analytics</td><td>Google Analytics (free)</td></tr>
+      <tr><td>🔔 Push notifications</td><td>OneSignal (free PWA)</td></tr>
+      <tr><td>☁️ Alternative DB</td><td>Firebase Realtime DB</td></tr>
+      <tr><td>📱 Real APK</td><td>pwabuilder.com (free)</td></tr>
+      <tr><td>🔗 Custom domain</td><td>Freenom (.tk domain free)</td></tr>
+    </table>
+  </div>
+  <div style="height:10px"></div>
+</div>
+
+</div><!-- end #app -->
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <button class="nav-btn active" onclick="showPage('home',this)"><span class="nicon">🏠</span>HOME</button>
+  <button class="nav-btn" onclick="showPage('timer',this)"><span class="nicon">⏱</span>TIMER</button>
+  <button class="nav-btn" onclick="showPage('plan',this)"><span class="nicon">📋</span>PLAN</button>
+  <button class="nav-btn" onclick="showPage('reminders',this)"><span class="nicon">🔔</span>ALARMS</button>
+  <button class="nav-btn" onclick="showPage('tracker',this)"><span class="nicon">📊</span>TRACK</button>
+  <button class="nav-btn" onclick="showPage('online',this)"><span class="nicon">🌐</span>ONLINE</button>
+</nav>
+
+<div id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// CORE UTILS
+// ─────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('page-'+name).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('app').scrollTop = 0;
+}
+
+function showPlan(tab, el) {
+  ['running','strength','diet','medicine','timetable','stretch'].forEach(function(t){
+    document.getElementById('plan-'+t).style.display = (t===tab) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+  if (el) el.classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// DAY COUNTER
+// ─────────────────────────────────────────────
+var startDate = localStorage.getItem('startDate');
+// Day 2 — started yesterday
+if (!startDate) { 
+  var y = new Date(); y.setDate(y.getDate()-1);
+  startDate = y.toDateString(); 
+  localStorage.setItem('startDate', startDate); 
+} else {
+  // ensure start date is yesterday if user was on day 1 yesterday
+  var stored = new Date(startDate);
+  var today2 = new Date(); today2.setHours(0,0,0,0);
+  var diff = Math.floor((today2 - stored) / 86400000);
+  if (diff === 0) { // still shows day 1, push back by 1
+    var y2 = new Date(); y2.setDate(y2.getDate()-1);
+    startDate = y2.toDateString();
+    localStorage.setItem('startDate', startDate);
+  }
+}
+var daysPassed = Math.floor((new Date() - new Date(startDate)) / 86400000);
+var dayNum = Math.min(daysPassed + 1, 40);
+var daysLeft = Math.max(40 - daysPassed, 0);
+document.getElementById('daynum').textContent = dayNum;
+document.getElementById('daysleft').textContent = daysLeft;
+document.getElementById('logday').textContent = dayNum;
+
+// ─────────────────────────────────────────────
+// CHECKLIST
+// ─────────────────────────────────────────────
+var TASKS = [
+  {id:'w',  txt:'🌅 5:00 AM — Wake up + 500ml water',   sub:'First thing every day', pre:false},
+  {id:'f',  txt:'🍌 Pre-run fuel (banana or chana)',     sub:'Eat 20 min before run', pre:false},
+  {id:'wu', txt:'🤸 Dynamic warm-up (10 min)',           sub:'Leg swings, high knees, jog', pre:false},
+  {id:'r',  txt:'🏃 Walk-Run — 5min walk + 10min run × 3', sub:'Day 2 · Phase 1 · Easy effort', pre:false},
+  {id:'cd', txt:'🚿 Cold shower after run',              sub:'Cold water on legs — reduces inflammation', pre:false},
+  {id:'bk', txt:'🥣 Breakfast (dal + roti + milk)',      sub:'Within 30 min of run', pre:false},
+  {id:'vit',txt:'💊 Vitamin C — 1 Limcee tab',           sub:'After breakfast — iron absorption', pre:false},
+  {id:'sn', txt:'🥜 Mid-morning snack (10:30 AM)',       sub:'Chana / peanuts / banana', pre:false},
+  {id:'ln', txt:'🍱 Lunch (1:30 PM) — chole+roti+curd', sub:'Tuesday meal — biggest of day', pre:false},
+  {id:'np', txt:'😴 Power nap (2 PM — 20 min)',          sub:'+30% afternoon performance', pre:false},
+  {id:'co', txt:'💪 Core only (4:30 PM — 15 min)',       sub:'Plank 3×60s · Mountain climbers · Crunches', pre:false},
+  {id:'hm', txt:'🥛 Haldi milk + sleep by 10 PM',        sub:'Milk + turmeric + pepper', pre:false},
+];
+
+function buildCL() {
+  var saved = JSON.parse(localStorage.getItem('cl_'+dayNum) || '{}');
+  var el = document.getElementById('clbox');
+  el.innerHTML = '';
+  var done = 0;
+  TASKS.forEach(function(task) {
+    var isDone = (saved[task.id] !== undefined) ? saved[task.id] : task.pre;
+    if (isDone) done++;
+    var div = document.createElement('div');
+    div.className = 'ci' + (isDone ? ' done' : '');
+    div.innerHTML = '<div class="ccirc">' + (isDone ? '✓' : '') + '</div><div><div class="ctxt">' + task.txt + '</div><div class="csub">' + task.sub + '</div></div>';
+    div.addEventListener('click', function(){
+      div.classList.toggle('done');
+      var nd = div.classList.contains('done');
+      div.querySelector('.ccirc').textContent = nd ? '✓' : '';
+      var s = JSON.parse(localStorage.getItem('cl_'+dayNum) || '{}');
+      s[task.id] = nd;
+      localStorage.setItem('cl_'+dayNum, JSON.stringify(s));
+      updateCLProg();
+      if (nd) showToast('✅ Task done!');
+      else showToast('↩ Task undone');
+      JBIN.saveAll();
+    });
+    el.appendChild(div);
+  });
+  updateCLProg();
+}
+
+function updateCLProg() {
+  var done = document.querySelectorAll('#clbox .ci.done').length;
+  document.getElementById('clprog').textContent = done + '/' + TASKS.length + ' done';
+  if (done === TASKS.length) showToast('🎉 All tasks done! Amazing day Aashish! 🇮🇳');
+}
+
+function resetCL() {
+  localStorage.removeItem('cl_'+dayNum);
+  buildCL();
+  showToast('🔄 Checklist reset');
+}
+
+buildCL();
+
+// ─────────────────────────────────────────────
+// TIMER
+// ─────────────────────────────────────────────
+var tInterval = null, tRunning = false, tMs = 0, laps = [], lapN = 0;
+
+function fmt(ms) {
+  var m = Math.floor(ms/60000);
+  var s = Math.floor((ms%60000)/1000);
+  var d = Math.floor((ms%1000)/100);
+  return (m<10?'0':'')+m+':'+(s<10?'0':'')+s+'.'+d;
+}
+
+function startTimer() {
+  if (!tRunning) {
+    tRunning = true;
+    var t0 = Date.now() - tMs;
+    tInterval = setInterval(function(){
+      tMs = Date.now() - t0;
+      document.getElementById('bigtimer').textContent = fmt(tMs);
+    }, 100);
+    document.getElementById('btnstart').textContent = 'PAUSE';
+    document.getElementById('btnstart').className = 'btn bd';
+  } else {
+    tRunning = false;
+    clearInterval(tInterval);
+    document.getElementById('btnstart').textContent = 'RESUME';
+    document.getElementById('btnstart').className = 'btn bg2';
+  }
+}
+
+function lapTimer() {
+  if (!tRunning && tMs === 0) return;
+  lapN++;
+  laps.push(tMs);
+  var prev = lapN > 1 ? laps[lapN-2] : 0;
+  var split = tMs - prev;
+  var targets = [80000, 82000, 82000, 78000];
+  var tgt = targets[lapN-1] || 82000;
+  var col = split <= tgt ? 'var(--green)' : 'var(--red)';
+  var el = document.getElementById('laplist');
+  el.innerHTML = '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'
+    + '<span style="color:var(--gray);font-size:11px">Lap ' + lapN + ' · ' + (lapN*400) + 'm</span>'
+    + '<span style="color:'+col+';font-family:\'Orbitron\',monospace;font-size:13px">' + fmt(split) + '</span>'
+    + '<span style="font-family:\'Orbitron\',monospace;font-size:13px;color:var(--cyan)">' + fmt(tMs) + '</span>'
+    + '</div>' + el.innerHTML;
+  if (lapN === 4) {
+    var ok = tMs <= 330000;
+    el.innerHTML = '<div style="text-align:center;padding:10px;font-size:13px;font-weight:700;color:' + (ok?'var(--green)':'var(--red)') + '">'
+      + (ok ? '🎉 CLEARED! Sub 5:30!' : '⚠ Keep training — you will get there!') + '</div>' + el.innerHTML;
+    clearInterval(tInterval); tRunning = false;
+    document.getElementById('btnstart').textContent = 'START';
+    document.getElementById('btnstart').className = 'btn bp';
+  }
+}
+
+function resetTimer() {
+  clearInterval(tInterval); tRunning = false; tMs = 0; laps = []; lapN = 0;
+  document.getElementById('bigtimer').textContent = '00:00.0';
+  document.getElementById('btnstart').textContent = 'START';
+  document.getElementById('btnstart').className = 'btn bp';
+  document.getElementById('laplist').innerHTML = '<div style="color:var(--gray);font-size:11px;text-align:center;padding:10px">Press LAP at each 400m mark</div>';
+}
+
+function saveRun() {
+  if (tMs === 0) { showToast('⚠ Run first, then save!'); return; }
+  var times = JSON.parse(localStorage.getItem('bestTimes') || '[]');
+  times.unshift({time: fmt(tMs), date: new Date().toLocaleDateString('en-IN'), ms: tMs, day: dayNum});
+  if (times.length > 20) times.pop();
+  localStorage.setItem('bestTimes', JSON.stringify(times));
+  renderRuns();
+  showToast('✅ Run saved: ' + fmt(tMs));
+  JBIN.saveAll();
+}
+
+function renderRuns() {
+  var times = JSON.parse(localStorage.getItem('bestTimes') || '[]');
+  var el = document.getElementById('besttimes');
+  if (!times.length) { el.innerHTML = '<div style="color:var(--gray);font-size:11px;text-align:center;padding:8px">No runs saved yet</div>'; return; }
+  var best = times.reduce(function(a,b){ return b.ms < a.ms ? b : a; }, {ms:Infinity});
+  if (best.ms !== Infinity) document.getElementById('curbest').textContent = best.time;
+  el.innerHTML = times.map(function(t,i){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'
+      + '<span style="color:var(--gray);font-size:10px">Day ' + t.day + ' · ' + t.date + '</span>'
+      + '<span style="font-family:\'Orbitron\',monospace;color:' + (t.ms<=330000?'var(--green)':'var(--gold)') + ';font-size:14px">' + t.time + '</span>'
+      + '<span style="font-size:10px">' + (t.ms<=330000?'✅ CLEARED':'🔴 Keep going') + '</span>'
+      + '</div>';
+  }).join('');
+}
+renderRuns();
+
+// ─────────────────────────────────────────────
+// REMINDERS / NOTIFICATIONS
+// ─────────────────────────────────────────────
+var ALARMS = [
+  {h:5,  m:0,  msg:'🌅 Wake Up! Drink 500ml water + eat pre-run fuel NOW!'},
+  {h:5,  m:20, msg:'🏃 Warm-Up time — 10 min dynamic stretches before run'},
+  {h:5,  m:30, msg:'🚀 RUN NOW — Agniveer GD Day ' + dayNum + '. Jai Hind! 🇮🇳'},
+  {h:7,  m:0,  msg:'🥣 Post-Run Meal — Dal + roti + milk within 30 min!'},
+  {h:7,  m:10, msg:'💊 Vitamin C — take 1 Limcee tab after breakfast'},
+  {h:10, m:30, msg:'🥜 Mid-Morning Snack — Chana / peanuts / banana'},
+  {h:13, m:30, msg:'🍱 Lunch Time — Biggest meal of the day!'},
+  {h:14, m:0,  msg:'😴 Power Nap — 20 min MAX. Set alarm!'},
+  {h:16, m:30, msg:'💪 Strength Training — Start now per plan!'},
+  {h:19, m:30, msg:'🍽 Dinner Time — Roti + dal + sabzi'},
+  {h:21, m:0,  msg:'🧘 Stretch Time — 15 min static stretches'},
+  {h:21, m:30, msg:'📵 PUT PHONE DOWN — Protect your sleep quality!'},
+  {h:21, m:45, msg:'🥛 Haldi Milk — Warm milk + turmeric + pepper'},
+  {h:22, m:0,  msg:'😴 SLEEP NOW — 7.5 hours. You grow stronger tonight!'},
+];
+
+function scheduleAlarms() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  ALARMS.forEach(function(a) {
+    var now = new Date(), next = new Date();
+    next.setHours(a.h, a.m, 0, 0);
+    if (next <= now) next.setDate(next.getDate() + 1);
+    var delay = next - now;
+    setTimeout(function() {
+      new Notification('Aashish — Agniveer GD', {body: a.msg, icon: './icon.png'});
+      setInterval(function() {
+        new Notification('Aashish — Agniveer GD', {body: a.msg, icon: './icon.png'});
+      }, 86400000);
+    }, delay);
+  });
+}
+
+function togRem(btn, msg) {
+  var isOn = btn.classList.contains('on');
+  btn.classList.toggle('on', !isOn);
+  btn.classList.toggle('off', isOn);
+  if (!isOn) {
+    if (typeof Notification !== 'undefined') {
+      if (Notification.permission === 'granted') {
+        showToast('🔔 ON: ' + msg.substring(0, 30));
+        scheduleAlarms();
+      } else {
+        Notification.requestPermission().then(function(p) {
+          if (p === 'granted') { showToast('✅ Notifications enabled!'); scheduleAlarms(); }
+          else showToast('⚠ Allow notifications in browser settings');
+        });
+      }
+    } else {
+      showToast('⚠ Notifications not supported in this browser');
+    }
+  } else {
+    showToast('🔕 Reminder disabled');
+  }
+}
+
+if (typeof Notification !== 'undefined') {
+  if (Notification.permission === 'granted') scheduleAlarms();
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission().then(function(p){ if(p==='granted') scheduleAlarms(); });
+  }
+}
+
+// ─────────────────────────────────────────────
+// TRACKER
+// ─────────────────────────────────────────────
+function saveEntry() {
+  var t = document.getElementById('i-time').value.trim();
+  var push = document.getElementById('i-push').value;
+  var pull = document.getElementById('i-pull').value;
+  var energy = document.getElementById('i-energy').value;
+  var notes = document.getElementById('i-notes').value;
+  if (!t && !push) { showToast('⚠ Enter at least one value!'); return; }
+  var entries = JSON.parse(localStorage.getItem('progressLog') || '[]');
+  entries.unshift({date: new Date().toLocaleDateString('en-IN'), day: dayNum, time: t, push: push, pull: pull, energy: energy, notes: notes});
+  if (entries.length > 50) entries.pop();
+  localStorage.setItem('progressLog', JSON.stringify(entries));
+  if (t) { document.getElementById('b1600').textContent = t; }
+  if (push) { document.getElementById('bpush').textContent = push; }
+  if (pull) { document.getElementById('bpull').textContent = pull; }
+  if (energy) { document.getElementById('benergy').textContent = energy + '/10'; }
+  document.getElementById('i-time').value = '';
+  document.getElementById('i-push').value = '';
+  document.getElementById('i-pull').value = '';
+  document.getElementById('i-energy').value = '';
+  document.getElementById('i-notes').value = '';
+  renderLog();
+  showToast('✅ Day ' + dayNum + ' logged! Keep going! 🔥');
+  setTimeout(function(){ JBIN.saveAll(); }, 400);
+}
+
+function renderLog() {
+  var entries = JSON.parse(localStorage.getItem('progressLog') || '[]');
+  var el = document.getElementById('proglog');
+  if (!entries.length) { el.innerHTML = '<div style="color:var(--gray);font-size:11px;text-align:center;padding:12px">No entries yet. Log your first session above!</div>'; return; }
+  el.innerHTML = entries.map(function(e){
+    return '<div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:7px">'
+      + '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
+      + '<span style="font-size:10px;color:var(--gray)">Day ' + e.day + ' · ' + e.date + '</span>'
+      + (e.time ? '<span style="font-family:\'Orbitron\',monospace;font-size:14px;color:var(--gold)">' + e.time + '</span>' : '')
+      + '</div>'
+      + '<div style="display:flex;gap:12px;font-size:11px;flex-wrap:wrap">'
+      + (e.push ? '<span>Push: <b style="color:var(--cyan)">' + e.push + '</b></span>' : '')
+      + (e.pull ? '<span>Pull: <b style="color:var(--cyan)">' + e.pull + '</b></span>' : '')
+      + (e.energy ? '<span>Energy: <b style="color:var(--green)">' + e.energy + '/10</b></span>' : '')
+      + '</div>'
+      + (e.notes ? '<div style="font-size:10.5px;color:var(--gray);margin-top:4px;font-style:italic">' + e.notes + '</div>' : '')
+      + '</div>';
+  }).join('');
+}
+renderLog();
+
+// ─────────────────────────────────────────────
+// UPSTASH REDIS SYNC ENGINE
+// ─────────────────────────────────────────────
+var JBIN = {
+  url: 'https://deep-burro-120847.upstash.io',
+  token: 'gQAAAAAAAdgPAAIgcDJjMTY3NWRkNjU2M2Q0Yjc0OTNmZjNjODM5MmJlNzNjMg',
+  key: 'aashish:agniveer:data',
+  busy: false,
+
+  headers: function() {
+    return {
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    };
+  },
+
+  updateUI: function() {
+    var dot = document.getElementById('sdot');
+    var msg = document.getElementById('smsg');
+    var ks  = document.getElementById('keystatus');
+    if (dot) dot.className = 'sdot green';
+    if (msg) msg.textContent = 'Upstash Redis ✅ — data syncing to cloud';
+    if (ks)  ks.innerHTML = '<div class="tipbox" style="margin:0">✅ Upstash Redis connected — auto-syncing!</div>';
+  },
+
+  getData: function() {
+    var data = { user:'Aashish', lastSaved: new Date().toISOString() };
+    data.progressLog = JSON.parse(localStorage.getItem('progressLog') || '[]');
+    data.bestTimes   = JSON.parse(localStorage.getItem('bestTimes')   || '[]');
+    data.startDate   = localStorage.getItem('startDate') || '';
+    data.checklists  = {};
+    for (var i = 1; i <= 40; i++) {
+      var c = localStorage.getItem('cl_' + i);
+      if (c) data.checklists[i] = JSON.parse(c);
+    }
+    return data;
+  },
+
+  saveAll: function() {
+    if (this.busy) return;
+    var self = this;
+    self.busy = true;
+    var dot = document.getElementById('sdot');
+    var msg = document.getElementById('smsg');
+    if (dot) dot.className = 'sdot gold';
+    if (msg) msg.textContent = 'Syncing to Upstash...';
+    var payload = JSON.stringify(self.getData());
+    // Use SET command via Upstash REST API
+    fetch(self.url + '/set/' + self.key, {
+      method: 'POST',
+      headers: self.headers(),
+      body: JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(j) {
+      self.busy = false;
+      self.updateUI();
+      showToast('☁️ Saved to Upstash!');
+    })
+    .catch(function(e) {
+      self.busy = false;
+      if (dot) dot.className = 'sdot red';
+      if (msg) msg.textContent = 'Sync failed — check connection';
+      showToast('⚠ Sync failed — check internet');
+    });
+  },
+
+  loadAll: function() {
+    var self = this;
+    var dot = document.getElementById('sdot');
+    var msg = document.getElementById('smsg');
+    if (dot) dot.className = 'sdot gold';
+    if (msg) msg.textContent = 'Loading from Upstash...';
+    fetch(self.url + '/get/' + self.key, {
+      method: 'GET',
+      headers: self.headers()
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(j) {
+      if (!j.result) { self.updateUI(); return; }
+      var d = JSON.parse(j.result);
+      if (d.progressLog) localStorage.setItem('progressLog', JSON.stringify(d.progressLog));
+      if (d.bestTimes)   localStorage.setItem('bestTimes',   JSON.stringify(d.bestTimes));
+      if (d.startDate)   localStorage.setItem('startDate',   d.startDate);
+      if (d.checklists) {
+        Object.keys(d.checklists).forEach(function(k) {
+          localStorage.setItem('cl_'+k, JSON.stringify(d.checklists[k]));
+        });
+      }
+      self.updateUI();
+      renderLog(); renderRuns(); buildCL();
+      showToast('✅ Data loaded from cloud!');
+    })
+    .catch(function() {
+      self.updateUI();
+      showToast('⚠ Load failed — check internet');
+    });
+  },
+
+  // keep these stubs so UI buttons don't break
+  setKey: function(k) { showToast('✅ Using Upstash Redis — no key needed!'); },
+  setBin: function(b) { }
+};
+
+JBIN.updateUI();
+
+// Auto-load once per day
+var lastLoad = localStorage.getItem('lastLoad');
+var today = new Date().toDateString();
+if (lastLoad !== today) {
+  localStorage.setItem('lastLoad', today);
+  setTimeout(function(){ JBIN.loadAll(); }, 1500);
+} else {
+  // Still show green dot
+  JBIN.updateUI();
+}
+
+// URL helpers
+function saveMyUrl() {
+  var u = document.getElementById('myurl').value.trim();
+  localStorage.setItem('myAppUrl', u);
+}
+function openMyApp() {
+  var u = document.getElementById('myurl').value.trim();
+  if (u) window.open(u, '_blank');
+  else showToast('⚠ Paste your URL first');
+}
+
+var savedUrl = localStorage.getItem('myAppUrl');
+if (savedUrl) { var mu = document.getElementById('myurl'); if(mu) mu.value = savedUrl; }
+
+// Upstash Redis — no init needed, credentials hardcoded above
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
